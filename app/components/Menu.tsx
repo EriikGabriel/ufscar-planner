@@ -18,25 +18,29 @@ export function Menu() {
       </Button>
       <Button
         size="icon"
-        className="bg-red-400/15 border border-red-500/25 hover:bg-red-400/25 w-12 h-12 rounded-xl"
+        variant="ghost"
+        className="hover:bg-red-400/25 w-12 h-12 rounded-xl"
       >
         <FileKey2Icon size={24} className="text-red-600" />
       </Button>
       <Button
         size="icon"
-        className="bg-red-400/15 border border-red-500/25 hover:bg-red-400/25 w-12 h-12 rounded-xl"
+        variant="ghost"
+        className="hover:bg-red-400/25 w-12 h-12 rounded-xl"
       >
         <FileClockIcon size={24} className="text-red-600" />
       </Button>
       <Button
         size="icon"
-        className="bg-red-400/15 border border-red-500/25 hover:bg-red-400/25 w-12 h-12 rounded-xl"
+        variant="ghost"
+        className="hover:bg-red-400/25 w-12 h-12 rounded-xl"
       >
         <FilePieChartIcon size={24} className="text-red-600" />
       </Button>
       <Button
         size="icon"
-        className="bg-red-400/15 border border-red-500/25 hover:bg-red-400/25 w-12 h-12 rounded-xl"
+        variant="ghost"
+        className="hover:bg-red-400/25 w-12 h-12 rounded-xl"
       >
         <FileBoxIcon size={24} className="text-red-600" />
       </Button>
