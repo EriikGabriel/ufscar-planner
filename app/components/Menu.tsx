@@ -19,30 +19,30 @@ export function Menu() {
       <Button
         size="icon"
         variant="ghost"
-        className="hover:bg-red-400/25 w-12 h-12 rounded-xl"
+        className="hover:bg-zinc-400/25 w-12 h-12 rounded-xl"
       >
-        <FileKey2Icon size={24} className="text-red-600" />
+        <FileKey2Icon size={24} className="text-zinc-400" />
       </Button>
       <Button
         size="icon"
         variant="ghost"
-        className="hover:bg-red-400/25 w-12 h-12 rounded-xl"
+        className="hover:bg-zinc-400/25 w-12 h-12 rounded-xl"
       >
-        <FileClockIcon size={24} className="text-red-600" />
+        <FileClockIcon size={24} className="text-zinc-400" />
       </Button>
       <Button
         size="icon"
         variant="ghost"
-        className="hover:bg-red-400/25 w-12 h-12 rounded-xl"
+        className="hover:bg-zinc-400/25 w-12 h-12 rounded-xl"
       >
-        <FilePieChartIcon size={24} className="text-red-600" />
+        <FilePieChartIcon size={24} className="text-zinc-400" />
       </Button>
       <Button
         size="icon"
         variant="ghost"
-        className="hover:bg-red-400/25 w-12 h-12 rounded-xl"
+        className="hover:bg-zinc-400/25 w-12 h-12 rounded-xl"
       >
-        <FileBoxIcon size={24} className="text-red-600" />
+        <FileBoxIcon size={24} className="text-zinc-400" />
       </Button>
     </nav>
   )
