@@ -9,7 +9,7 @@ import {
 
 export function Menu() {
   return (
-    <nav className="relative h-dvh w-fit flex flex-col justify-center items-center gap-10 px-5 bg-zinc-900/50">
+    <nav className="relative min-h-dvh w-fit flex flex-col justify-center items-center gap-10 px-5 bg-zinc-900/50">
       <Button
         size="icon"
         className="bg-red-400/15 border border-red-500/25 hover:bg-red-400/25 w-12 h-12 rounded-xl before:content-[''] before:bg-red-700 before:h-12 before:w-1 before:absolute before:left-0 before:rounded-md"

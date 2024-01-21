@@ -11,7 +11,7 @@ import { BellIcon } from "lucide-react"
 
 export function Header() {
   return (
-    <header className="w-full h-20 border-b flex items-center justify-between px-14">
+    <header className="w-full h-[10%] border-b flex items-center justify-between px-14">
       <div className="flex gap-12 items-center justify-around">
         <h1 className="text-xl tracking-wider">Boa noite, Erik 👋</h1>
       </div>
