@@ -21,16 +21,16 @@ export function ActivitiesSummary() {
       <ActivitiesCard
         color="bg-orange-400/80"
         Icon={FileClockIcon}
-        quantity={0}
-        required={330}
+        quantity={150}
+        required={780 + 60}
       >
         Disciplinas <span className="font-semibold">Optativas</span>
       </ActivitiesCard>
       <ActivitiesCard
         color="bg-green-400/80"
         Icon={FilePieChartIcon}
-        quantity={150}
-        required={780 + 60}
+        quantity={0}
+        required={90}
       >
         Atividades <span className="font-semibold">Complementares</span>
       </ActivitiesCard>
@@ -38,7 +38,7 @@ export function ActivitiesSummary() {
         color="bg-purple-400/80"
         Icon={FileBoxIcon}
         quantity={0}
-        required={90}
+        required={330}
       >
         Atividades de <span className="font-semibold">Extensão</span>
       </ActivitiesCard>
