@@ -11,8 +11,9 @@ import {
   FormItem,
 } from "@ui/form"
 import { Input } from "@ui/input"
-import { EyeIcon, HashIcon, LockIcon } from "lucide-react"
+import { EyeIcon, EyeOffIcon, HashIcon, LockIcon } from "lucide-react"
 import Image from "next/image"
+import { useRouter, useSearchParams } from "next/navigation"
 import { forwardRef } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -70,6 +71,8 @@ const LoginForm = forwardRef((props, ref) => {
     resolver: zodResolver(loginSchema),
     defaultValues: { user: "", password: "" },
   })
+  const router = useRouter()
+  const { get } = useSearchParams()
 
   async function handleLogin({ user, password }: loginSchemaType) {
     const headers = {
@@ -86,6 +89,13 @@ const LoginForm = forwardRef((props, ref) => {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  function createQueryString(key: string, value: string) {
+    const params = new URLSearchParams()
+    params.set(key, value)
+
+    return params.toString()
   }
 
   return (
@@ -164,11 +174,19 @@ const LoginForm = forwardRef((props, ref) => {
                       size="icon"
                       variant="ghost"
                       className="h-fit w-fit p-1"
+                      onClick={() => {
+                        const state = get("p") === "show" ? "hide" : "show"
+                        router.push("?" + createQueryString("p", state))
+                      }}
                     >
-                      <EyeIcon className="h-4 w-4 text-zinc-500" />
+                      {get("p") === "hide" ? (
+                        <EyeIcon className="h-4 w-4 text-zinc-500" />
+                      ) : (
+                        <EyeOffIcon className="h-4 w-4 text-zinc-500" />
+                      )}
                     </Button>
                   }
-                  type="password"
+                  type={get("p") === "show" ? "text" : "password"}
                   placeholder="Senha"
                   autoComplete="off"
                   classNameGroup={cn(
