@@ -1,5 +1,6 @@
 "use client"
 
+import { fetchSiga } from "@helpers/siga"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { cn } from "@lib/utils"
 import { Button } from "@ui/button"
@@ -11,11 +12,20 @@ import {
   FormItem,
 } from "@ui/form"
 import { Input } from "@ui/input"
-import { EyeIcon, EyeOffIcon, HashIcon, LockIcon } from "lucide-react"
+import { Toaster } from "@ui/sonner"
+import {
+  EyeIcon,
+  EyeOffIcon,
+  HashIcon,
+  LockIcon,
+  RotateCwIcon,
+} from "lucide-react"
 import Image from "next/image"
 import { useRouter, useSearchParams } from "next/navigation"
-import { forwardRef } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+
 import { z } from "zod"
 
 const loginSchema = z.object({
@@ -23,79 +33,46 @@ const loginSchema = z.object({
   password: z.string().min(6),
 })
 
-const SIGA_URL = "https://sistemas.ufscar.br/sagui-api/siga/deferimento"
+type LoginSchemaType = z.infer<typeof loginSchema>
 
-/** Resposta OK da API de deferimento do Sagui */
-type SigaApiOk = {
-  data: {}
-}
-
-/** Resposta de Erro da API de deferimento do Sagui */
-type SigaApiError = {
-  timestamp: number
-  status: number
-  error: string
-  message: string
-  path: string
-}
-
-/** Resposta que o siga pode retornar pela API */
-type SigaResponse = SigaApiOk | SigaApiError
-
-/** O motivo de erro que o Siga retornou */
-export enum SigaErrorReason {
-  /** O usuário não está autorizado ou suas credenciais são inválidas. */
-  UNAUTHORIZED,
-
-  /** Um erro desconhecido. */
-  UNKNOWN,
-}
-
-/** Um erro do Siga, mapeado pelo planner */
-export type SigaError = {
-  ok: false
-  error: SigaErrorReason
-}
-
-/** Um sucesso do Siga, incluindo as matérias do deferimento. */
-export type SigaSuccess = {
-  ok: true
-}
-
-export type SigaResult = SigaSuccess | SigaError
-
-type loginSchemaType = z.infer<typeof loginSchema>
-
-const LoginForm = forwardRef((props, ref) => {
-  const form = useForm<loginSchemaType>({
+export function LoginForm() {
+  const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
     defaultValues: { user: "", password: "" },
   })
   const router = useRouter()
   const { get } = useSearchParams()
 
-  async function handleLogin({ user, password }: loginSchemaType) {
-    const headers = {
-      Authorization:
-        "Basic " + Buffer.from(`${user}:${password}`).toString("base64"),
-      Accept: "application/json",
-    }
-
-    try {
-      const res = await fetch(SIGA_URL, { headers, mode: "no-cors" })
-      const data: SigaResponse = await res.json()
-
-      console.log(data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const [isFetching, setIsFetching] = useState(false)
 
   function createQueryString(key: string, value: string) {
     const params = new URLSearchParams()
     params.set(key, value)
 
     return params.toString()
+  }
+
+  async function handleLogin({ user, password }: LoginSchemaType) {
+    setIsFetching(true)
+
+    const res = await fetchSiga(user, password)
+
+    if (res.ok) {
+      router.push("/home")
+    } else {
+      toast("Erro ao fazer login. Verifique suas credenciais.", {
+        classNames: { toast: "group-[.toaster]:bg-red-500 " },
+      })
+
+      setIsFetching(false)
+
+      const formElement = document.querySelector("form") as HTMLFormElement
+
+      formElement.classList.add("animate-shake")
+      formElement.addEventListener("animationend", () => {
+        formElement.classList.remove("animate-shake")
+      })
+    }
   }
 
   return (
@@ -200,13 +177,13 @@ const LoginForm = forwardRef((props, ref) => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-1/2">
-          Entrar
+        <Button type="submit" className="w-1/2" disabled={isFetching}>
+          {isFetching && <RotateCwIcon className="mr-2 h-4 w-4 animate-spin" />}
+          {isFetching ? "Entrando..." : "Entrar"}
         </Button>
       </form>
+
+      <Toaster />
     </Form>
   )
-})
-LoginForm.displayName = "LoginForm"
-
-export { LoginForm }
+}
