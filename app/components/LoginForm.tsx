@@ -27,6 +27,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
 import { z } from "zod"
+import { setCookie } from "../helpers/store"
 
 const loginSchema = z.object({
   user: z.string().email().or(z.string().length(6)),
@@ -58,7 +59,7 @@ export function LoginForm() {
     const res = await fetchSiga(user, password)
 
     if (res.ok) {
-      router.push("/home")
+      setCookie("siga-auth", user, { secure: true, sameSite: "strict" })
     } else {
       toast("Erro ao fazer login. Verifique suas credenciais.", {
         classNames: { toast: "group-[.toaster]:bg-red-500 " },

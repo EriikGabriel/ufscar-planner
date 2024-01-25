@@ -3,8 +3,14 @@ import { ActivitiesSummary } from "@components/ActivitiesSummary"
 import { ChartsTabs } from "@components/ChartsTabs"
 import { Header } from "@components/Header"
 import { ProfileInfo } from "@components/ProfileInfo"
+import { getCookie } from "@helpers/store"
+import { redirect } from "next/navigation"
 
-export default function Home() {
+export default async function Home() {
+  const userHash = await getCookie("siga-auth")
+
+  if (!userHash) redirect("/")
+
   return (
     <main className="w-dvw min-h-dvh">
       <Header />
