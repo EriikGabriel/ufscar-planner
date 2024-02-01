@@ -59,7 +59,7 @@ export function LoginForm() {
     const res = await fetchSiga(user, password)
 
     if (res.ok) {
-      setCookie("siga-auth", user, { secure: true, sameSite: "strict" })
+      setCookie("siga-auth", user, { sameSite: "strict" })
     } else {
       toast("Erro ao fazer login. Verifique suas credenciais.", {
         classNames: { toast: "group-[.toaster]:bg-red-500 " },
