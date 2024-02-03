@@ -60,6 +60,9 @@ export function LoginForm() {
 
     if (res.ok) {
       setCookie("siga-auth", user, { sameSite: "strict" })
+      localStorage.setItem("@ufscar-planner/siga-auth", user)
+
+      router.push("/home")
     } else {
       toast("Erro ao fazer login. Verifique suas credenciais.", {
         classNames: { toast: "group-[.toaster]:bg-red-500 " },

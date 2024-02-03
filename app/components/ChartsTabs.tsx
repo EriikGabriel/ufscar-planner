@@ -1,5 +1,3 @@
-"use client"
-
 import { BarChartBigIcon, LineChartIcon, RainbowIcon } from "lucide-react"
 
 import { BarChart } from "./BarChart"

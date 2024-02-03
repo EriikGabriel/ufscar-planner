@@ -33,9 +33,10 @@ export interface Database {
         }
         Relationships: []
       }
-      discipline: {
+      disciplines: {
         Row: {
           activity_id: number
+          conclusion_semester: number | null
           created_at: string
           id: number
           name: string
@@ -46,6 +47,7 @@ export interface Database {
         }
         Insert: {
           activity_id: number
+          conclusion_semester?: number | null
           created_at?: string
           id?: number
           name: string
@@ -56,6 +58,7 @@ export interface Database {
         }
         Update: {
           activity_id?: number
+          conclusion_semester?: number | null
           created_at?: string
           id?: number
           name?: string
@@ -66,7 +69,7 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "discipline_activity_id_fkey"
+            foreignKeyName: "disciplines_activity_id_fkey"
             columns: ["activity_id"]
             isOneToOne: false
             referencedRelation: "activities"
@@ -74,7 +77,7 @@ export interface Database {
           }
         ]
       }
-      extra: {
+      extras: {
         Row: {
           activity_id: number | null
           created_at: string
@@ -98,7 +101,7 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "extra_activity_id_fkey"
+            foreignKeyName: "extras_activity_id_fkey"
             columns: ["activity_id"]
             isOneToOne: false
             referencedRelation: "activities"

@@ -1,62 +1,96 @@
 "use client"
 
+import { createClient } from "@lib/supabase/client"
 import { Chart, ChartData, registerables } from "chart.js"
+import { useEffect, useMemo, useState } from "react"
 import { Line } from "react-chartjs-2"
 
+type DatasetType = ChartData<"line">["datasets"][0]
+
 export function LineChart() {
+  const [labels, setLabels] = useState<string[]>([])
+  const [datasets, setDatasets] = useState<DatasetType[]>([])
+
   Chart.register(...registerables)
 
-  const labels = [
-    "Período 1",
-    "Período 2",
-    "Período 3",
-    "Período 4",
-    "Período 5",
-  ]
+  useEffect(() => {
+    const sigaAuth = localStorage.getItem("@ufscar-planner/siga-auth") ?? ""
+    const supabase = createClient()
 
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "Obrigatórias",
-        data: [6, 5, 5, 6, 2],
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235)",
+    const studentQuery = supabase
+      .from("students")
+      .select()
+      .eq(sigaAuth?.length === 6 ? "ra" : "email", sigaAuth)
+      .single()
 
-        cubicInterpolationMode: "monotone",
-      },
-      {
-        label: "Optativas 1",
-        data: [0, 0, 0, 0, 0],
-        borderColor: "rgb(222, 31, 200)",
-        backgroundColor: "rgba(222, 31, 200)",
-        cubicInterpolationMode: "monotone",
-      },
-      {
-        label: "Optativas 2",
-        data: [0, 1, 1, 0, 2],
-        borderColor: "rgb(222, 31, 31)",
-        backgroundColor: "rgba(222, 31, 31)",
-        cubicInterpolationMode: "monotone",
-      },
-    ],
-  } as ChartData<"line">
+    const disciplinesQuery = supabase
+      .from("disciplines")
+      .select()
+      .in("activity_id", [1, 2, 3])
+
+    Promise.all([studentQuery, disciplinesQuery]).then(
+      ([studentRes, disciplinesRes]) => {
+        const student = studentRes.data
+        const disciplines = disciplinesRes.data
+
+        if (!student || !disciplines) return
+
+        const periods = Array.from(
+          { length: student.semester - 1 },
+          (_, i) => `Período ${i + 1}`
+        )
+        setLabels(periods)
+
+        const colors = [
+          "rgb(53, 162, 235)",
+          "rgb(222, 31, 200)",
+          "rgb(222, 31, 31)",
+        ]
+
+        const newDatasets = Array.from({ length: 3 }, (_, i) => {
+          const type = i === 0 ? "Obrigatórias" : `Optativas ${i}`
+          const dataValues = Array.from({ length: periods.length }, () => 0)
+
+          const filteredDisciplines = disciplines.filter(
+            (d) => d.activity_id === i + 1 && d.conclusion_semester
+          )
+
+          filteredDisciplines.forEach((d) => {
+            if (!d.conclusion_semester) return
+
+            const index = d.conclusion_semester - 1
+            dataValues[index]++
+          })
+
+          return {
+            label: type,
+            data: dataValues,
+            borderColor: colors[i],
+            backgroundColor: colors[i],
+            cubicInterpolationMode: "monotone",
+          } as DatasetType
+        })
+
+        setDatasets(newDatasets)
+      }
+    )
+  }, [])
+
+  const memoizedData = useMemo(() => ({ labels, datasets }), [labels, datasets])
 
   return (
     <Line
       options={{
         responsive: true,
         plugins: {
-          legend: {
-            position: "top" as const,
-          },
+          legend: { position: "top" as const },
           title: {
             display: true,
             text: "Conclusão das disciplinas por período",
           },
         },
       }}
-      data={data}
+      data={memoizedData}
     />
   )
 }
