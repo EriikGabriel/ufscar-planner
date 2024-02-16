@@ -20,6 +20,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@supabase/ssr": "^0.0.10",
     "@supabase/supabase-js": "^2.39.3",
+    "@tanstack/react-table": "^8.11.8",
     "bcrypt-ts": "^5.0.1",
     "chart.js": "^4.4.1",
     "class-variance-authority": "^0.7.0",

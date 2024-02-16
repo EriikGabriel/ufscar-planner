@@ -1,5 +1,5 @@
 import { createClient } from "@lib/supabase/server"
-import { FileKey2Icon } from "lucide-react"
+import { icons } from "lucide-react"
 import { cookies } from "next/headers"
 import { ActivitiesCard } from "./ActivitiesCard"
 
@@ -36,12 +36,20 @@ export async function ActivitiesSummary() {
     "bg-yellow-400/80",
   ]
 
+  const iconsName = [
+    "FileKey2",
+    "FileClock",
+    "FilePieChart",
+    "FileBox",
+    "FileBadge",
+  ] as (keyof typeof icons)[]
+
   return (
     <div className="grid grid-cols-2 grid-rows-3 gap-5">
       {activities?.map(({ id, name, coursed_hours, required_hours }, i) => (
         <ActivitiesCard
           color={colors[i % colors.length]}
-          Icon={FileKey2Icon}
+          Icon={icons[iconsName[i]]}
           quantity={coursed_hours}
           required={required_hours}
           className={`${i === activities.length - 1 && "col-span-2"}`}

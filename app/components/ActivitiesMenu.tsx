@@ -11,14 +11,13 @@ import { ActivitiesButton } from "./ActivitiesButton"
 export function ActivitiesMenu() {
   return (
     <Carousel
-      opts={{
-        align: "center",
-      }}
+      opts={{ align: "center" }}
       className="w-full max-w-2xl cursor-grab blurred"
     >
       <CarouselContent>
         <CarouselItem className="basis-[31%]">
           <ActivitiesButton
+            href="/activities/mandatory"
             Icon={FileKey2Icon}
             className="bg-blue-500/20 text-blue-500 hover:bg-blue-500/15"
           >
@@ -27,6 +26,7 @@ export function ActivitiesMenu() {
         </CarouselItem>
         <CarouselItem className="basis-[31%]">
           <ActivitiesButton
+            href="/activities/optative"
             Icon={FileClockIcon}
             className="bg-orange-500/20 text-orange-500 hover:bg-orange-500/15"
           >
@@ -35,6 +35,7 @@ export function ActivitiesMenu() {
         </CarouselItem>
         <CarouselItem className="basis-[31%]">
           <ActivitiesButton
+            href="/activities/complementary"
             Icon={FilePieChartIcon}
             className="bg-green-500/20 text-green-500 hover:bg-green-500/15"
           >
@@ -43,6 +44,7 @@ export function ActivitiesMenu() {
         </CarouselItem>
         <CarouselItem className="basis-[31%]">
           <ActivitiesButton
+            href="/activities/extension"
             Icon={FileBoxIcon}
             className="bg-purple-500/20 text-purple-500 hover:bg-purple-500/15"
           >
@@ -51,6 +53,7 @@ export function ActivitiesMenu() {
         </CarouselItem>
         <CarouselItem className="basis-[31%]">
           <ActivitiesButton
+            href="/activities/internship"
             Icon={FileBadgeIcon}
             className="bg-yellow-500/20 text-yellow-500 hover:bg-yellow-500/15"
           >
