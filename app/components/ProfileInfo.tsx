@@ -16,8 +16,13 @@ export async function ProfileInfo() {
     .eq(sigaAuth.length === 6 ? "ra" : "email", sigaAuth)
     .single()
 
+  const { count: countDisciplines } = await supabase
+    .from("disciplines")
+    .select("*", { count: "exact" })
+    .eq("status", "studying")
+
   return (
-    <div className="bg-zinc-900/70 flex items-center justify-between w-full h-20 px-5 rounded-md">
+    <div className="bg-zinc-900/70 flex items-center justify-between w-full h-20 p-5 rounded-md">
       <div className="flex gap-3">
         <Avatar className="rounded-md h-12 w-12">
           <AvatarImage src="https://github.com/EriikGabriel.png" />
@@ -34,7 +39,8 @@ export async function ProfileInfo() {
         </h2>
         <Separator />
         <h2 className="font-light text-sm">
-          Disciplinas atuais: <span className="font-bold">5</span>
+          Disciplinas atuais:{" "}
+          <span className="font-bold">{countDisciplines}</span>
         </h2>
       </div>
     </div>

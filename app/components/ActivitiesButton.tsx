@@ -17,7 +17,7 @@ export function ActivitiesButton({
   return (
     <Button
       variant="secondary"
-      className={`${className} h-20 w-48 px-5`}
+      className={`${className} h-20 w-11/12 px-5`}
       asChild
     >
       <Link href={href ?? ""}>

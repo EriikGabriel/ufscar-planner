@@ -10,10 +10,7 @@ import { ActivitiesButton } from "./ActivitiesButton"
 
 export function ActivitiesMenu() {
   return (
-    <Carousel
-      opts={{ align: "center" }}
-      className="w-full max-w-2xl cursor-grab blurred"
-    >
+    <Carousel opts={{ align: "center" }} className="w-full cursor-grab blurred">
       <CarouselContent>
         <CarouselItem className="basis-[31%]">
           <ActivitiesButton

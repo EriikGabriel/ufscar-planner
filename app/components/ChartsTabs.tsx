@@ -7,8 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs"
 
 export function ChartsTabs() {
   return (
-    <Tabs defaultValue="line" className="w-full">
-      <TabsList>
+    <Tabs defaultValue="line" className="w-full h-full">
+      <TabsList className="mb-4">
         <TabsTrigger value="line">
           <LineChartIcon />
         </TabsTrigger>
