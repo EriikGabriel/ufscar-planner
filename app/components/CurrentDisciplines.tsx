@@ -11,7 +11,7 @@ export async function CurrentDisciplines() {
   const { data: disciplines } = await supabase
     .from("disciplines")
     .select()
-    .eq("status", "studying")
+    .eq("status", "Studying")
 
   return (
     <ScrollArea className="h-full border rounded-md p-3">

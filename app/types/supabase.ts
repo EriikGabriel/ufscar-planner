@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       activities: {
@@ -153,7 +153,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      status: "studying" | "not started" | "pending" | "complete"
+      status: "Studying" | "Not started" | "Pending" | "Complete"
     }
     CompositeTypes: {
       [_ in never]: never

@@ -1,40 +1,20 @@
-import { ColumnDef } from "@tanstack/react-table"
-
-export type Payment = {
-  id: string
-  amount: number
-  status: "pending" | "processing" | "success" | "failed"
-  email: string
-}
-
-export const columns: ColumnDef<Payment>[] = [
-  {
-    accessorKey: "status",
-    header: "Status",
-  },
-  {
-    accessorKey: "email",
-    header: "Email",
-  },
-  {
-    accessorKey: "amount",
-    header: "Amount",
-  },
-]
-
-const data = [
-  {
-    status: "pending",
-    email: "m@example.com",
-    amount: 100,
-    id: "728ed52f",
-  },
-]
+import { createClient } from "@lib/supabase/server"
+import { DataTable } from "@ui/data-table"
+import { columns } from "@ui/data-table-columns"
+import { cookies } from "next/headers"
 
 export default async function Mandatory() {
+  const cookieStore = cookies()
+  const supabase = createClient(cookieStore)
+
+  const { data: disciplines } = await supabase
+    .from("disciplines")
+    .select()
+    .eq("activity_id", 1)
+
   return (
     <main className="w-dvw min-h-dvh flex justify-center items-center">
-      {/* <DataTable data={data} columns={columns} /> */}
+      <DataTable data={disciplines ?? []} columns={columns} />
     </main>
   )
 }
