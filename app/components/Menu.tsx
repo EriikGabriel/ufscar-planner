@@ -6,9 +6,9 @@ export function Menu() {
       <MenuButton href="/home" icon="LayoutGrid" />
       <MenuButton href="/disciplines/mandatory" icon="FileKey2" />
       <MenuButton href="/disciplines/optative" icon="FileClock" />
-      <MenuButton href="/extra/complementary" icon="FilePieChart" />
-      <MenuButton href="/extra/extension" icon="FileBox" />
-      <MenuButton href="/extra/internship" icon="FileBadge" />
+      <MenuButton href="/extras/complementary" icon="FilePieChart" />
+      <MenuButton href="/extras/extension" icon="FileBox" />
+      <MenuButton href="/extras/internship" icon="FileBadge" />
     </nav>
   )
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { DisciplineType } from "@@types/database"
+import { Tables } from "@/app/types/supabase"
 import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "./badge"
 
@@ -11,7 +11,7 @@ const statusColor: { [key: string]: string } = {
   Complete: "bg-green-500/50 border-green-500",
 }
 
-export const mandatoryColumns: ColumnDef<DisciplineType>[] = [
+export const mandatoryColumns: ColumnDef<Tables<"disciplines">>[] = [
   {
     accessorKey: "name",
     header: "Nome",
@@ -51,7 +51,7 @@ export const mandatoryColumns: ColumnDef<DisciplineType>[] = [
   },
 ]
 
-export const optativeColumns: ColumnDef<DisciplineType>[] = [
+export const optativeColumns: ColumnDef<Tables<"disciplines">>[] = [
   {
     accessorKey: "name",
     header: "Nome",

@@ -79,25 +79,34 @@ export type Database = {
       }
       extras: {
         Row: {
-          activity_id: number | null
+          activity_id: number
+          conclusion_date: string
           created_at: string
           description: string
+          hours: number
           id: number
           name: string
+          validated: boolean
         }
         Insert: {
-          activity_id?: number | null
+          activity_id: number
+          conclusion_date: string
           created_at?: string
           description: string
+          hours: number
           id?: number
           name: string
+          validated?: boolean
         }
         Update: {
-          activity_id?: number | null
+          activity_id?: number
+          conclusion_date?: string
           created_at?: string
           description?: string
+          hours?: number
           id?: number
           name?: string
+          validated?: boolean
         }
         Relationships: [
           {

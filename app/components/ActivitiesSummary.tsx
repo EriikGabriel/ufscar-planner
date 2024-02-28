@@ -12,6 +12,21 @@ export async function ActivitiesSummary() {
     .select()
     .order("id")
 
+  const { data: extra } = await supabase
+    .from("extras")
+    .select()
+    .eq("validated", false)
+
+  const estimatedHours: Record<number, number> = {
+    4: 0,
+    5: 0,
+    6: 0,
+  }
+
+  extra?.forEach(
+    (activity) => (estimatedHours[activity.activity_id] += activity.hours)
+  )
+
   // Merge Optatives 1 and Optatives 2 into a single activity
   activities?.forEach((activity, i) => {
     if (activity.name === "Optativas 1") {
@@ -24,8 +39,7 @@ export async function ActivitiesSummary() {
       }
     }
 
-    if (activity.name !== "Optativas 2") activity.id = i + 1
-    else activities.splice(i, 1)
+    if (activity.name === "Optativas 2") activities.splice(i, 1)
   })
 
   const colors = [
@@ -52,6 +66,9 @@ export async function ActivitiesSummary() {
           Icon={icons[iconsName[i]]}
           quantity={coursed_hours}
           required={required_hours}
+          estimated={
+            id >= 4 && estimatedHours[id] ? estimatedHours[id] : undefined
+          }
           className={`${i === activities.length - 1 && "col-span-2"}`}
           key={id}
         >

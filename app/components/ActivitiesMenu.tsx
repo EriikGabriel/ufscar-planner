@@ -32,7 +32,7 @@ export function ActivitiesMenu() {
         </CarouselItem>
         <CarouselItem className="basis-[31%]">
           <ActivitiesButton
-            href="/extra/complementary"
+            href="/extras/complementary"
             Icon={FilePieChartIcon}
             className="bg-green-500/20 text-green-500 hover:bg-green-500/15"
           >
@@ -41,7 +41,7 @@ export function ActivitiesMenu() {
         </CarouselItem>
         <CarouselItem className="basis-[31%]">
           <ActivitiesButton
-            href="/extra/extension"
+            href="/extras/extension"
             Icon={FileBoxIcon}
             className="bg-purple-500/20 text-purple-500 hover:bg-purple-500/15"
           >
@@ -50,7 +50,7 @@ export function ActivitiesMenu() {
         </CarouselItem>
         <CarouselItem className="basis-[31%]">
           <ActivitiesButton
-            href="/extra/internship"
+            href="/extras/internship"
             Icon={FileBadgeIcon}
             className="bg-yellow-500/20 text-yellow-500 hover:bg-yellow-500/15"
           >

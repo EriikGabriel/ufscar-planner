@@ -7,6 +7,7 @@ interface ActivitiesCardProps extends React.ComponentProps<"div"> {
   color: string
   quantity: number
   required: number
+  estimated?: number
 }
 
 export function ActivitiesCard({
@@ -14,6 +15,7 @@ export function ActivitiesCard({
   color,
   required,
   quantity,
+  estimated,
   Icon,
   className,
 }: ActivitiesCardProps) {
@@ -36,7 +38,8 @@ export function ActivitiesCard({
       </div>
       <p className="font-medium">{percentage.toFixed(0)}% completo</p>
       <small className="text-zinc-500">
-        {quantity} de {required} horas. Faltam {required - quantity}.
+        {quantity} de {required} horas. Faltam {required - quantity}.{" "}
+        {estimated && `(Est. ${estimated} horas)`}
       </small>
     </div>
   )
