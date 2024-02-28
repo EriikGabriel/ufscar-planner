@@ -1,3 +1,3 @@
-import { Database } from "./supabase"
+import { Tables } from "./supabase"
 
-export type DisciplineType = Database["public"]["Tables"]["disciplines"]["Row"]
+export type DisciplineType = Tables<"disciplines">
