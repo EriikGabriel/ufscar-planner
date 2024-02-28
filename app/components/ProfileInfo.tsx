@@ -19,7 +19,7 @@ export async function ProfileInfo() {
   const { count: countDisciplines } = await supabase
     .from("disciplines")
     .select("*", { count: "exact" })
-    .eq("status", "studying")
+    .eq("status", "Studying")
 
   return (
     <div className="bg-zinc-900/70 flex items-center justify-between w-full h-20 p-5 rounded-md">

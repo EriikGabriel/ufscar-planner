@@ -12,6 +12,8 @@ import {
   BookPlusIcon,
   CircleIcon,
 } from "lucide-react"
+import { useParams } from "next/navigation"
+import { AddDisciplineSheet } from "../AddDisciplineSheet"
 import { Button } from "./button"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 import { Input } from "./input"
@@ -66,6 +68,10 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
 
+  const params = useParams()
+
+  const discipline = params.discipline as "mandatory" | "optative"
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
@@ -95,9 +101,11 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <Button className="">
-        <BookPlusIcon className="mr-2 h-4 w-4" /> Cadastrar
-      </Button>
+      <AddDisciplineSheet discipline={discipline}>
+        <Button size="sm">
+          <BookPlusIcon className="mr-2 h-4 w-4" /> Cadastrar
+        </Button>
+      </AddDisciplineSheet>
     </div>
   )
 }
