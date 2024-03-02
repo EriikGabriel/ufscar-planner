@@ -12,6 +12,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
+import { cn } from "@/app/lib/utils"
+import { PrimitiveDivProps } from "@radix-ui/react-select"
 import {
   Table,
   TableBody,
@@ -27,16 +29,13 @@ import { DataTableToolbar } from "./data-table-toolbar"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-}
-
-type MetaType = {
-  type: string
-  colors?: { [key: string]: string }
+  className?: PrimitiveDivProps["className"]
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  className,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
@@ -53,7 +52,7 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className={cn("flex flex-col gap-5", className)}>
       <DataTableToolbar table={table} />
       <div className="rounded-md border">
         <Table>
@@ -98,7 +97,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Sem resultados.
                 </TableCell>
               </TableRow>
             )}

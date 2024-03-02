@@ -1,6 +1,8 @@
-import { DataList } from "@/app/components/DataList"
+import { DataList } from "@components/DataList"
+import { getCookie } from "@helpers/store"
 import { createClient } from "@lib/supabase/server"
 import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
 
 export default async function Extras({
   params: { extra },
@@ -9,6 +11,10 @@ export default async function Extras({
 }) {
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
+
+  const userHash = await getCookie("siga-auth")
+
+  if (!userHash) redirect("/")
 
   const titles = {
     complementary: "Complementares",

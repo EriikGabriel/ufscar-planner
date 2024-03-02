@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@ui/dropdown-menu"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 export function ProfileDropdown() {
@@ -26,8 +27,12 @@ export function ProfileDropdown() {
       <DropdownMenuContent>
         <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Perfil</DropdownMenuItem>
-        <DropdownMenuItem>Preferências</DropdownMenuItem>
+        <Link href="user/profile">
+          <DropdownMenuItem>Perfil</DropdownMenuItem>
+        </Link>
+        <Link href="user/preferences">
+          <DropdownMenuItem>Preferências</DropdownMenuItem>
+        </Link>
         <DropdownMenuItem
           className="text-red-600"
           onClick={async () => {

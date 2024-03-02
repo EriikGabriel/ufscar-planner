@@ -1,10 +1,11 @@
 import { createClient } from "@lib/supabase/server"
+import { ScrollAreaProps } from "@radix-ui/react-scroll-area"
 import { Badge } from "@ui/badge"
 import { ScrollArea } from "@ui/scroll-area"
 import { cookies } from "next/headers"
 import { cn } from "../lib/utils"
 
-export async function CurrentDisciplines() {
+export async function CurrentDisciplines({ className }: ScrollAreaProps) {
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
 
@@ -14,13 +15,15 @@ export async function CurrentDisciplines() {
     .eq("status", "Studying")
 
   return (
-    <ScrollArea className="h-full border rounded-md p-3">
+    <ScrollArea
+      className={cn("h-full w-full border rounded-md p-3", className)}
+    >
       <ul className="flex flex-col gap-3">
         {disciplines?.map(({ id, name, activity_id }) => (
           <li
             key={id}
             className={cn(
-              "flex justify-between rounded border-l-4 px-3",
+              "flex justify-between rounded border-l-4 pl-3",
               activity_id == 1 ? "border-blue-500" : "border-orange-500"
             )}
           >

@@ -1,7 +1,9 @@
+import { getCookie } from "@helpers/store"
 import { createClient } from "@lib/supabase/server"
 import { DataTable } from "@ui/data-table"
 import { mandatoryColumns, optativeColumns } from "@ui/data-table-columns"
 import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
 
 export default async function Disciplines({
   params: { discipline },
@@ -10,6 +12,10 @@ export default async function Disciplines({
 }) {
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
+
+  const userHash = await getCookie("siga-auth")
+
+  if (!userHash) redirect("/")
 
   const { data: disciplines } = await supabase
     .from("disciplines")
