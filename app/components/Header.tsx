@@ -20,7 +20,8 @@ export async function Header() {
     <header className="w-full h-[10%] border-b flex items-center justify-between px-14">
       <div className="flex gap-12 items-center justify-around">
         <h1 className="text-xl tracking-wider">
-          Boa noite, {student?.name.split(" ")[0]} 👋
+          {new Date().getHours() < 13 ? "Bom dia" : "Boa noite"},{" "}
+          {student?.name.split(" ")[0]} 👋
         </h1>
       </div>
       <div className="flex items-center gap-8">
