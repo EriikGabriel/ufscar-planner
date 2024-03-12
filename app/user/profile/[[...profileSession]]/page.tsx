@@ -1,5 +1,7 @@
 import { GeneralProfileSession } from "@components/GeneralProfileSession"
+import { PersonalProfileSession } from "@components/PersonalProfileSession"
 import { ProfileMenu } from "@components/ProfileMenu"
+import { SemesterProfileSession } from "@components/SemesterProfileSession"
 import { getCookie } from "@helpers/store"
 import { createClient } from "@lib/supabase/server"
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar"
@@ -30,7 +32,7 @@ export default async function Profile({
 
   return (
     <main className="w-dvw min-h-dvh flex flex-col gap-20 justify-center items-center">
-      <div className="w-10/12 flex flex-col gap-5">
+      <div className="h-4/5 w-10/12 flex flex-col gap-5">
         <div className="flex gap-5">
           <Avatar className="rounded-md h-16 w-16">
             <AvatarImage src="https://github.com/EriikGabriel.png" />
@@ -47,6 +49,12 @@ export default async function Profile({
         <div className="flex gap-5">
           <ProfileMenu session={profileSession?.[0]} />
           {!session && <GeneralProfileSession student={student!} />}
+          {session === "personal" && (
+            <PersonalProfileSession student={student!} />
+          )}
+          {session === "semester" && (
+            <SemesterProfileSession student={student!} />
+          )}
         </div>
       </div>
     </main>

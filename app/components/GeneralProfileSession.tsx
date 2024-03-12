@@ -12,7 +12,9 @@ import {
   TrendingUp,
   User,
 } from "lucide-react"
+import Link from "next/link"
 import { Tables } from "../types/supabase"
+import { CompleteSemester } from "./CompleteSemester"
 
 interface GeneralProfileSessionProps {
   student: Tables<"students">
@@ -28,8 +30,8 @@ export function GeneralProfileSession({ student }: GeneralProfileSessionProps) {
         <div className="flex items-center gap-5">
           <User className="w-6 h-6" />
           <h2 className="font-semibold">Dados pessoais</h2>
-          <Button variant="link" className="text-red-500">
-            Alterar
+          <Button variant="link" className="text-red-500" asChild>
+            <Link href="profile/personal">Alterar</Link>
           </Button>
         </div>
         <div className="flex flex-col gap-3">
@@ -60,7 +62,7 @@ export function GeneralProfileSession({ student }: GeneralProfileSessionProps) {
               <TooltipTrigger>
                 <div className="flex gap-5">
                   <TrendingUp className="w-6 h-6" />
-                  <p>{student.ira}</p>
+                  <p>{student.ira.at(-1)}</p>
                 </div>
               </TooltipTrigger>
               <TooltipContent>IRA</TooltipContent>
@@ -97,27 +99,37 @@ export function GeneralProfileSession({ student }: GeneralProfileSessionProps) {
         <div className="flex items-center gap-5">
           <LibraryBig className="w-6 h-6" />
           <h2 className="font-semibold">Semestre corrente</h2>
-          <small>(Semestre atual: {student.semester})</small>
+          <small>
+            {student.semester_completed
+              ? "Nenhum semestre corrente"
+              : `Semestre atual: ${student.semester}`}
+          </small>
           <div className="flex gap-3">
-            <Button variant="link" className="text-red-500 ">
-              Alterar
+            <Button variant="link" className="text-red-500" asChild>
+              <Link href="profile/semester">Alterar</Link>
             </Button>
-            <Button
-              variant="outline"
-              className="bg-transparent border-green-500 text-green-500 hover:bg-green-500/20"
-            >
-              Concluir semestre
-            </Button>
+            {student.semester_completed ? (
+              <Button
+                variant="outline"
+                className="bg-transparent border-red-500 text-red-500 hover:bg-red-500/20"
+              >
+                Iniciar novo semestre
+              </Button>
+            ) : (
+              <CompleteSemester>
+                <Button
+                  variant="outline"
+                  className="bg-transparent border-green-500 text-green-500 hover:bg-green-500/20"
+                >
+                  Concluir semestre
+                </Button>
+              </CompleteSemester>
+            )}
           </div>
         </div>
 
         <div className="flex gap-5">
-          <CurrentDisciplines className="p-5 w-1/2" />
-          {/* <DataTable
-      data={disciplines ?? []}
-      columns={allColumns}
-      className="w-full"
-    /> */}
+          <CurrentDisciplines className="p-5 " />
         </div>
       </section>
     </div>

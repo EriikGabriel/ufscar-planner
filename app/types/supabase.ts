@@ -124,33 +124,36 @@ export type Database = {
           created_at: string
           email: string
           entry_date: string
-          ira: number
+          ira: number[]
           limit_date: string
           name: string
           ra: string
           semester: number
+          semester_completed: boolean
         }
         Insert: {
           course_name: string
           created_at?: string
           email: string
           entry_date: string
-          ira: number
+          ira: number[]
           limit_date?: string
           name: string
           ra: string
           semester: number
+          semester_completed?: boolean
         }
         Update: {
           course_name?: string
           created_at?: string
           email?: string
           entry_date?: string
-          ira?: number
+          ira?: number[]
           limit_date?: string
           name?: string
           ra?: string
           semester?: number
+          semester_completed?: boolean
         }
         Relationships: []
       }
