@@ -36,6 +36,7 @@ export default async function Disciplines({
         columns={
           discipline === "mandatory" ? mandatoryColumns : optativeColumns
         }
+        tools={{ registerButton: true }}
       />
     </main>
   )

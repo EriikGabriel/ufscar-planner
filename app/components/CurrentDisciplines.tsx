@@ -3,6 +3,7 @@ import { cn } from "@lib/utils"
 import { ScrollAreaProps } from "@radix-ui/react-scroll-area"
 import { Badge } from "@ui/badge"
 import { ScrollArea } from "@ui/scroll-area"
+import { TentTree } from "lucide-react"
 import { cookies } from "next/headers"
 
 export async function CurrentDisciplines({ className }: ScrollAreaProps) {
@@ -44,10 +45,11 @@ export async function CurrentDisciplines({ className }: ScrollAreaProps) {
             </li>
           ))
         ) : (
-          <li className="flex items-center justify-center h-20">
-            <p className="text-lg font-medium text-muted-foreground">
-              Nenhuma disciplina sendo cursada
+          <li className="flex text-muted-foreground flex-col h-full justify-center items-center gap-3">
+            <p className="text-lg text-center">
+              Nenhuma disciplina sendo cursada. Período de férias.
             </p>
+            <TentTree className="h-10 w-10" />
           </li>
         )}
       </ul>

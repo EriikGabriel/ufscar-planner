@@ -1,3 +1,4 @@
+import { Tables } from "@@types/supabase"
 import {
   CheckCircledIcon,
   Cross2Icon,
@@ -6,65 +7,96 @@ import {
 } from "@radix-ui/react-icons"
 import { Table } from "@tanstack/react-table"
 import {
-  ArrowDownIcon,
-  ArrowRightIcon,
-  ArrowUpIcon,
   BookPlusIcon,
   CircleIcon,
+  FileBadge,
+  FileBox,
+  FileClock,
+  FileKey2,
+  FilePieChart,
+  ListChecks,
 } from "lucide-react"
 import { useParams } from "next/navigation"
 import { AddDisciplineSheet } from "../AddDisciplineSheet"
+import { NewSemesterAlert } from "../NewSemesterAlert"
 import { Button } from "./button"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 import { Input } from "./input"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
+  tools?: {
+    filters?: {
+      status?: boolean
+      activity?: boolean
+    }
+    registerButton?: boolean
+    selectButton?: boolean
+  }
 }
 
 export const statuses = [
   {
     value: "Not started",
-    label: "Not started",
+    label: "Não iniciada",
     icon: CircleIcon,
   },
   {
     value: "Studying",
-    label: "Studying",
+    label: "Cursando",
     icon: StopwatchIcon,
   },
   {
     value: "Complete",
-    label: "Complete",
+    label: "Completa",
     icon: CheckCircledIcon,
   },
   {
     value: "Pending",
-    label: "Pending",
+    label: "Pendente",
     icon: CrossCircledIcon,
   },
 ]
 
-export const priorities = [
+export const activities = [
   {
-    label: "Low",
-    value: "low",
-    icon: ArrowDownIcon,
+    value: 1,
+    label: "Obrigatória",
+    icon: FileKey2,
   },
   {
-    label: "Medium",
-    value: "medium",
-    icon: ArrowRightIcon,
+    value: 2,
+    label: "Optativa 1",
+    icon: FileClock,
   },
   {
-    label: "High",
-    value: "high",
-    icon: ArrowUpIcon,
+    value: 3,
+    label: "Optativa 2",
+    icon: FileClock,
+  },
+  {
+    value: 4,
+    label: "Complementar",
+    icon: FilePieChart,
+  },
+  {
+    value: 5,
+    label: "Extensão",
+    icon: FileBox,
+  },
+  {
+    value: 6,
+    label: "Estágio",
+    icon: FileBadge,
   },
 ]
 
 export function DataTableToolbar<TData>({
   table,
+  tools = {
+    registerButton: false,
+    selectButton: false,
+  },
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
 
@@ -83,6 +115,13 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
+        {table.getColumn("activity_id") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("activity_id")}
+            title="Tipo de atividade"
+            options={activities}
+          />
+        )}
         {table.getColumn("status") && (
           <DataTableFacetedFilter
             column={table.getColumn("status")}
@@ -101,11 +140,29 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <AddDisciplineSheet discipline={discipline}>
-        <Button size="sm">
-          <BookPlusIcon className="mr-2 h-4 w-4" /> Cadastrar
-        </Button>
-      </AddDisciplineSheet>
+      {tools.registerButton && (
+        <AddDisciplineSheet discipline={discipline}>
+          <Button size="sm">
+            <BookPlusIcon className="mr-2 h-4 w-4" /> Cadastrar
+          </Button>
+        </AddDisciplineSheet>
+      )}
+      {tools.selectButton && (
+        <NewSemesterAlert
+          data={
+            table
+              .getFilteredSelectedRowModel()
+              .rows.map((r) => r.original) as Tables<"disciplines">[]
+          }
+        >
+          <Button
+            size="sm"
+            disabled={!!!table.getFilteredSelectedRowModel().rows.length}
+          >
+            <ListChecks className="mr-2 h-4 w-4" /> Concluir
+          </Button>
+        </NewSemesterAlert>
+      )}
     </div>
   )
 }

@@ -15,6 +15,7 @@ import {
 import Link from "next/link"
 import { Tables } from "../types/supabase"
 import { CompleteSemester } from "./CompleteSemester"
+import { NewSemester } from "./NewSemester"
 
 interface GeneralProfileSessionProps {
   student: Tables<"students">
@@ -109,12 +110,14 @@ export function GeneralProfileSession({ student }: GeneralProfileSessionProps) {
               <Link href="profile/semester">Alterar</Link>
             </Button>
             {student.semester_completed ? (
-              <Button
-                variant="outline"
-                className="bg-transparent border-red-500 text-red-500 hover:bg-red-500/20"
-              >
-                Iniciar novo semestre
-              </Button>
+              <NewSemester>
+                <Button
+                  variant="outline"
+                  className="bg-transparent border-red-500 text-red-500 hover:bg-red-500/20"
+                >
+                  Iniciar novo semestre
+                </Button>
+              </NewSemester>
             ) : (
               <CompleteSemester>
                 <Button

@@ -30,12 +30,20 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   className?: PrimitiveDivProps["className"]
+  tools?: {
+    registerButton?: boolean
+    selectButton?: boolean
+  }
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   className,
+  tools = {
+    registerButton: false,
+    selectButton: false,
+  },
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
@@ -53,7 +61,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className={cn("flex flex-col gap-5", className)}>
-      <DataTableToolbar table={table} />
+      <DataTableToolbar table={table} tools={tools} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

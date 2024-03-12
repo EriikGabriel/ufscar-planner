@@ -94,7 +94,7 @@ export function SelectDisciplinesForm({
 
     await supabase
       .from("students")
-      .update({ semester_completed: true, semester: student!.semester + 1 })
+      .update({ semester_completed: true })
       .eq(userAuth.length === 6 ? "ra" : "email", userAuth)
 
     if (statusComplete === 204 && statusDependencies == 204) location.reload()
