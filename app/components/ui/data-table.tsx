@@ -34,6 +34,7 @@ interface DataTableProps<TData, TValue> {
     registerButton?: boolean
     selectButton?: boolean
   }
+  showActivity?: boolean
 }
 
 export function DataTable<TData, TValue>({
@@ -44,6 +45,7 @@ export function DataTable<TData, TValue>({
     registerButton: false,
     selectButton: false,
   },
+  showActivity = true,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
@@ -57,6 +59,13 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    initialState: {
+      columnVisibility: {
+        id: false,
+        created_at: false,
+        activity_id: showActivity,
+      },
+    },
   })
 
   return (

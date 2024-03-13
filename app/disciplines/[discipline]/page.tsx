@@ -22,6 +22,7 @@ export default async function Disciplines({
     .select()
     .in("activity_id", discipline === "mandatory" ? [1] : [2, 3])
     .order("status")
+    .order("name")
 
   return (
     <main className="w-dvw min-h-dvh flex flex-col gap-20 justify-center items-center">
@@ -37,6 +38,7 @@ export default async function Disciplines({
           discipline === "mandatory" ? mandatoryColumns : optativeColumns
         }
         tools={{ registerButton: true }}
+        showActivity={discipline !== "mandatory"}
       />
     </main>
   )

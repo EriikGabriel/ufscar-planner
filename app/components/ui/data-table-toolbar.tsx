@@ -17,7 +17,7 @@ import {
   ListChecks,
 } from "lucide-react"
 import { useParams } from "next/navigation"
-import { AddDisciplineSheet } from "../AddDisciplineSheet"
+import { DisciplineSheet } from "../DisciplineSheet"
 import { NewSemesterAlert } from "../NewSemesterAlert"
 import { Button } from "./button"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
@@ -141,11 +141,11 @@ export function DataTableToolbar<TData>({
         )}
       </div>
       {tools.registerButton && (
-        <AddDisciplineSheet discipline={discipline}>
+        <DisciplineSheet disciplineType={discipline}>
           <Button size="sm">
             <BookPlusIcon className="mr-2 h-4 w-4" /> Cadastrar
           </Button>
-        </AddDisciplineSheet>
+        </DisciplineSheet>
       )}
       {tools.selectButton && (
         <NewSemesterAlert

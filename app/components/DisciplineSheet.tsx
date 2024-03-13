@@ -30,11 +30,13 @@ import {
 } from "@ui/sheet"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { Tables } from "../types/supabase"
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group"
 
-interface addDisciplineFormProps {
+interface DisciplineSheetProps {
   children: React.ReactNode
-  discipline: "mandatory" | "optative"
+  disciplineType: "mandatory" | "optative"
+  discipline?: Tables<"disciplines">
 }
 
 const disciplineSchema = z.object({
@@ -49,21 +51,23 @@ const disciplineSchema = z.object({
 
 type DisciplineSchemaType = z.infer<typeof disciplineSchema>
 
-export function AddDisciplineSheet({
+export function DisciplineSheet({
   children,
+  disciplineType,
   discipline,
-}: addDisciplineFormProps) {
+}: DisciplineSheetProps) {
   const supabase = createClient()
 
   const form = useForm<DisciplineSchemaType>({
     resolver: zodResolver(disciplineSchema),
     defaultValues: {
-      name: "",
-      profile: discipline == "mandatory" ? 1 : 0,
-      t_hours: 0,
-      p_hours: 0,
-      activity_id: discipline == "mandatory" ? 1 : 2,
-      conclusion_semester: 0,
+      name: discipline?.name ?? "",
+      profile: discipline?.profile ?? 0,
+      t_hours: discipline?.t_hours ?? 0,
+      p_hours: discipline?.p_hours ?? 0,
+      activity_id: discipline?.activity_id ?? 1,
+      status: discipline?.status,
+      conclusion_semester: discipline?.conclusion_semester ?? 0,
     },
   })
 
@@ -71,12 +75,33 @@ export function AddDisciplineSheet({
     const { status } = await supabase.from("disciplines").insert({
       ...data,
       profile: data.profile ? data.profile : null,
-      conclusion_semester: data.conclusion_semester
-        ? data.conclusion_semester
-        : null,
+      conclusion_semester:
+        data.conclusion_semester && form.watch("status") === "Complete"
+          ? data.conclusion_semester
+          : null,
     })
 
     if (status === 201) location.reload()
+  }
+
+  async function handleEditDiscipline(data: DisciplineSchemaType) {
+    const { status } = await supabase
+      .from("disciplines")
+      .update({
+        name: data.name,
+        activity_id: data.activity_id,
+        t_hours: data.t_hours,
+        p_hours: data.p_hours,
+        status: data.status,
+        profile: data.profile ? data.profile : null,
+        conclusion_semester:
+          data.conclusion_semester && form.watch("status") === "Complete"
+            ? data.conclusion_semester
+            : null,
+      })
+      .eq("id", discipline?.id ?? -1)
+
+    if (status === 204) location.reload()
   }
 
   return (
@@ -86,17 +111,22 @@ export function AddDisciplineSheet({
       <SheetContent>
         <SheetHeader>
           <SheetTitle>
-            Cadastrar disciplina{" "}
-            {discipline == "mandatory" ? "obrigatória" : "optativa"}
+            {!discipline ? "Cadastrar" : "Editar"} disciplina{" "}
+            {disciplineType === "mandatory" ? "obrigatória" : "optativa"}
           </SheetTitle>
           <SheetDescription>
-            Cadastre uma nova disciplina{" "}
-            {discipline == "mandatory" ? "obrigatória" : "optativa"}
+            {!discipline ? "Cadastre" : "Edite"} uma disciplina{" "}
+            {disciplineType === "mandatory" ? "obrigatória" : "optativa"}
+            {!discipline ? " nova" : " existente"}
           </SheetDescription>
         </SheetHeader>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(handleAddDiscipline)}
+            onSubmit={form.handleSubmit(
+              discipline === undefined
+                ? handleAddDiscipline
+                : handleEditDiscipline
+            )}
             className="flex flex-col gap-5 py-10"
           >
             <FormField
@@ -107,7 +137,9 @@ export function AddDisciplineSheet({
                   <FormLabel>Nome</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Nome da disciplina"
+                      placeholder={
+                        discipline ? discipline.name : "Nome da disciplina"
+                      }
                       autoComplete="off"
                       {...field}
                     />
@@ -116,20 +148,22 @@ export function AddDisciplineSheet({
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="profile"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Perfil</FormLabel>
-                  <FormControl>
-                    <Input type="number" placeholder="1" min={0} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {discipline === "optative" && (
+            {disciplineType === "mandatory" && (
+              <FormField
+                control={form.control}
+                name="profile"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Perfil</FormLabel>
+                    <FormControl>
+                      <Input type="number" placeholder="1" min={0} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+            {disciplineType === "optative" && (
               <FormField
                 control={form.control}
                 name="activity_id"
@@ -175,7 +209,9 @@ export function AddDisciplineSheet({
                     <FormControl>
                       <Input
                         type="number"
-                        placeholder="30"
+                        placeholder={
+                          discipline ? String(discipline.t_hours) : "30"
+                        }
                         min={0}
                         {...field}
                       />
@@ -193,7 +229,9 @@ export function AddDisciplineSheet({
                     <FormControl>
                       <Input
                         type="number"
-                        placeholder="30"
+                        placeholder={
+                          discipline ? String(discipline.p_hours) : "30"
+                        }
                         min={0}
                         {...field}
                       />
@@ -218,10 +256,12 @@ export function AddDisciplineSheet({
                         <SelectValue placeholder="Status" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Studying">Studying</SelectItem>
-                        <SelectItem value="Not started">Not started</SelectItem>
-                        <SelectItem value="Pending">Pending</SelectItem>
-                        <SelectItem value="Complete">Complete</SelectItem>
+                        <SelectItem value="Studying">Cursando</SelectItem>
+                        <SelectItem value="Not started">
+                          Não iniciada
+                        </SelectItem>
+                        <SelectItem value="Pending">Pendente</SelectItem>
+                        <SelectItem value="Complete">Completa</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -245,7 +285,9 @@ export function AddDisciplineSheet({
               />
             )}
             <SheetFooter>
-              <Button type="submit">Cadastrar</Button>
+              <Button type="submit">
+                {!discipline ? "Cadastrar" : "Concluir"}
+              </Button>
             </SheetFooter>
           </form>
         </Form>
