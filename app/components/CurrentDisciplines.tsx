@@ -30,11 +30,13 @@ export async function CurrentDisciplines({ className }: ScrollAreaProps) {
                 activity_id == 1 ? "border-blue-500" : "border-orange-500"
               )}
             >
-              <h2 className="text-md font-medium">{name}</h2>
+              <h2 className="text-md font-medium max-2xl:text-sm truncate overflow-auto w-fit">
+                {name}
+              </h2>
               <Badge
                 variant="outline"
                 className={cn(
-                  "w-24 flex justify-center",
+                  "w-24 flex justify-center max-md:hidden",
                   activity_id == 1
                     ? "bg-blue-500/20 border-blue-500 text-blue-500"
                     : "bg-orange-500/20 border-orange-500 text-orange-500"

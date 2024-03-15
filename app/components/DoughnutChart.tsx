@@ -84,7 +84,9 @@ export function DoughnutChart() {
           aspectRatio: 2,
           responsive: true,
           plugins: {
-            legend: { position: "top" as const },
+            legend: {
+              position: "top" as const,
+            },
             title: {
               display: true,
               text: "Porcentagem de conclusão das atividades",
@@ -92,11 +94,13 @@ export function DoughnutChart() {
           },
         }}
       />
-      <div className="flex flex-col justify-center items-center gap-3 absolute bottom-5 left-1/2 -translate-x-1/2">
-        <h1 className="text-4xl font-bold font-mono">
+      <div className="flex flex-col justify-center items-center gap-3 absolute bottom-5 max-md:bottom-0 left-1/2 -translate-x-1/2">
+        <h1 className="text-4xl font-bold font-mono max-md:text-xl">
           {generalPercentage.toFixed(0)}%
         </h1>
-        <p className="!font-light text-zinc-300 font-mono">Porcentagem Geral</p>
+        <p className="!font-light text-zinc-300 font-mono max-md:text-xs">
+          Porcentagem Geral
+        </p>
       </div>
     </div>
   )

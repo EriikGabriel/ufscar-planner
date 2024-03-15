@@ -17,9 +17,9 @@ export async function Header() {
     .single()
 
   return (
-    <header className="w-full h-[10%] border-b flex items-center justify-between px-14">
+    <header className="w-full h-[10%] max-xl:py-5 border-b flex items-center justify-between px-14">
       <div className="flex gap-12 items-center justify-around">
-        <h1 className="text-xl tracking-wider">
+        <h1 className="text-xl tracking-wider max-md:text-md max-sm:text-sm">
           {new Date().getHours() < 13
             ? "Bom dia"
             : new Date().getHours() <= 17
@@ -29,7 +29,7 @@ export async function Header() {
         </h1>
       </div>
       <div className="flex items-center gap-8">
-        <BellIcon size={24} />
+        <BellIcon size={24} className="max-md:hidden" />
         <ProfileDropdown />
       </div>
     </header>

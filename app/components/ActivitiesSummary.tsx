@@ -1,9 +1,11 @@
 import { createClient } from "@lib/supabase/server"
+import { SlotProps } from "@radix-ui/react-slot"
 import { icons } from "lucide-react"
 import { cookies } from "next/headers"
+import { cn } from "../lib/utils"
 import { ActivitiesCard } from "./ActivitiesCard"
 
-export async function ActivitiesSummary() {
+export async function ActivitiesSummary({ className }: SlotProps) {
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
 
@@ -59,7 +61,12 @@ export async function ActivitiesSummary() {
   ] as (keyof typeof icons)[]
 
   return (
-    <div className="grid grid-cols-2 grid-rows-3 gap-5">
+    <div
+      className={cn(
+        "grid grid-cols-2 grid-rows-3 max-xl:h-fit gap-5 max-2xl:gap-2 max-sm:grid-cols-1 max-sm:grid-rows-5 max-sm:gap-3",
+        className
+      )}
+    >
       {activities?.map(({ id, name, coursed_hours, required_hours }, i) => (
         <ActivitiesCard
           color={colors[i % colors.length]}
@@ -69,13 +76,18 @@ export async function ActivitiesSummary() {
           estimated={
             id >= 4 && estimatedHours[id] ? estimatedHours[id] : undefined
           }
-          className={`${i === activities.length - 1 && "col-span-2"}`}
+          className={`${
+            i === activities.length - 1 && "col-span-2 max-sm:col-span-1"
+          }`}
           key={id}
+          index={i}
         >
-          {name !== "Obrigatória" && name !== "Optativa"
-            ? "Atividades"
-            : "Disciplinas"}
-          <span className="font-semibold">{name}</span>
+          <p className="max-xl:hidden max-sm:inline">
+            {name !== "Obrigatória" && name !== "Optativa"
+              ? "Atividades"
+              : "Disciplinas"}
+          </p>
+          <span className="font-semibold max-xl:text-end">{name}</span>
         </ActivitiesCard>
       ))}
     </div>

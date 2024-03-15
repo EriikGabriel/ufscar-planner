@@ -8,7 +8,7 @@ import { LineChart } from "./LineChart"
 
 export function ChartsTabs() {
   return (
-    <Tabs defaultValue="line" className="w-full h-full">
+    <Tabs defaultValue="line" className="w-full">
       <div className="mb-4 flex items-center justify-between">
         <TabsList>
           <TabsTrigger value="line">
@@ -33,13 +33,13 @@ export function ChartsTabs() {
       </TabsContent>
       <TabsContent
         value="bar"
-        className="bg-zinc-800/20 p-2 py-3 border rounded-md"
+        className="bg-zinc-800/20 p-2 py-3 border rounded-md "
       >
         <BarChart />
       </TabsContent>
       <TabsContent
         value="doughnut"
-        className="bg-zinc-800/20 p-2 py-3 border rounded-md"
+        className="bg-zinc-800/20 p-2 py-3 border rounded-md "
       >
         <DoughnutChart />
       </TabsContent>

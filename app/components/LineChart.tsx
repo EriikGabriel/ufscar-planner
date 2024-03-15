@@ -11,6 +11,8 @@ export function LineChart() {
   const [labels, setLabels] = useState<string[]>([])
   const [datasets, setDatasets] = useState<DatasetType[]>([])
 
+  const width = window.innerWidth
+
   Chart.register(...registerables)
 
   useEffect(() => {
@@ -87,7 +89,9 @@ export function LineChart() {
       options={{
         responsive: true,
         plugins: {
-          legend: { position: "top" as const },
+          legend: {
+            position: "top" as const,
+          },
           title: {
             display: true,
             text: "Conclusão das disciplinas por período",

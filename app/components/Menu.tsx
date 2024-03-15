@@ -2,7 +2,7 @@ import { MenuButton } from "./MenuButton"
 
 export function Menu() {
   return (
-    <nav className="relative min-h-dvh w-fit flex flex-col justify-between items-center px-5 pb-10 pt-48 bg-zinc-900/50">
+    <nav className="relative max-xl:fixed max-xl:-left-20 max-xl:hover:left-0 min-h-dvh w-fit flex flex-col justify-between items-center px-5 pb-10 pt-48 bg-zinc-900/50 max-xl:bg-zinc-900 z-10">
       <div className="flex flex-col gap-10">
         <MenuButton href="/home" icon="LayoutGrid" />
         <MenuButton href="/disciplines/mandatory" icon="FileKey2" />
