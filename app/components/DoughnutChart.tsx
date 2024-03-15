@@ -14,7 +14,6 @@ export function DoughnutChart() {
   const [generalPercentage, setGeneralPercentage] = useState(0)
 
   useEffect(() => {
-    const sigaAuth = localStorage.getItem("@ufscar-planner/siga-auth") ?? ""
     const supabase = createClient()
 
     const activitiesQuery = supabase.from("activities").select().order("id")

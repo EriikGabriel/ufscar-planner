@@ -36,7 +36,11 @@ export function LineChart() {
         if (!student || !disciplines) return
 
         const periods = Array.from(
-          { length: student.semester - 1 },
+          {
+            length: student.semester_completed
+              ? student.semester
+              : student.semester - 1,
+          },
           (_, i) => `Período ${i + 1}`
         )
         setLabels(periods)

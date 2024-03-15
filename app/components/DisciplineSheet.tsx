@@ -318,14 +318,13 @@ export function DisciplineSheet({
             <FormField
               control={form.control}
               name="prerequisites"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Pré-requisitos</FormLabel>
                   <FormControl>
                     <MultiSelect
                       options={options}
                       placeholder="Selecione os pré-requisitos..."
-                      optionsLimitShow={7}
                       selected={selected}
                       setSelected={setSelected}
                     />

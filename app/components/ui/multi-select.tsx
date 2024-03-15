@@ -23,7 +23,7 @@ interface MultiSelectProps<T> {
 export function MultiSelect({
   options,
   placeholder,
-  optionsLimitShow = 5,
+  optionsLimitShow,
   selected,
   setSelected,
 }: MultiSelectProps<OptionType>) {
@@ -110,10 +110,10 @@ export function MultiSelect({
       <div className="relative mt-2">
         {open && selectables.length > 0 ? (
           <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-            <CommandGroup className="h-full overflow-auto">
+            <CommandGroup className="h-48 overflow-auto">
               {selectables.map(
                 (option, i) =>
-                  i < optionsLimitShow && (
+                  i < (optionsLimitShow ?? selectables.length) && (
                     <CommandItem
                       key={option.value}
                       onMouseDown={(e) => {
@@ -131,7 +131,7 @@ export function MultiSelect({
                   )
               )}
             </CommandGroup>
-            {selectables.length > optionsLimitShow && (
+            {selectables.length > (optionsLimitShow ?? selectables.length) && (
               <div className="pl-2 py-2 text-center text-xs text-muted-foreground">
                 {selectables.length} opções totais...
               </div>

@@ -63,19 +63,21 @@ export function SelectDisciplinesForm({
         return discipline ? acc + item.totalHours : acc
       }, 0)
 
-    for (let i = 1; i <= 3; i++) {
-      const { data: activity } = await supabase
-        .from("activities")
-        .select()
-        .eq("id", i)
-        .single()
+    if (selectUpdate === "Complete") {
+      for (let i = 1; i <= 3; i++) {
+        const { data: activity } = await supabase
+          .from("activities")
+          .select()
+          .eq("id", i)
+          .single()
 
-      await supabase
-        .from("activities")
-        .update({
-          coursed_hours: activity!.coursed_hours + calculateTotalHours(i),
-        })
-        .eq("id", i)
+        await supabase
+          .from("activities")
+          .update({
+            coursed_hours: activity!.coursed_hours + calculateTotalHours(i),
+          })
+          .eq("id", i)
+      }
     }
 
     const { status: statusComplete } = await supabase
@@ -87,17 +89,19 @@ export function SelectDisciplinesForm({
       })
       .in("name", names)
 
-    const { status: statusDependencies } = await supabase
-      .from("disciplines")
-      .update({ status: "Pending" })
-      .in("name", dependencies)
+    if (selectUpdate === "Complete") {
+      const { status: statusDependencies } = await supabase
+        .from("disciplines")
+        .update({ status: "Pending" })
+        .in("name", dependencies)
 
-    await supabase
-      .from("students")
-      .update({ semester_completed: true })
-      .eq(userAuth.length === 6 ? "ra" : "email", userAuth)
+      await supabase
+        .from("students")
+        .update({ semester_completed: true })
+        .eq(userAuth.length === 6 ? "ra" : "email", userAuth)
+    }
 
-    if (statusComplete === 204 && statusDependencies == 204) location.reload()
+    if (statusComplete === 204) location.reload()
   }
 
   return (
