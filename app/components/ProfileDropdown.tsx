@@ -30,9 +30,6 @@ export function ProfileDropdown() {
         <Link href="user/profile">
           <DropdownMenuItem>Perfil</DropdownMenuItem>
         </Link>
-        <Link href="user/preferences">
-          <DropdownMenuItem>Preferências</DropdownMenuItem>
-        </Link>
         <DropdownMenuItem
           className="text-red-600"
           onClick={async () => {
