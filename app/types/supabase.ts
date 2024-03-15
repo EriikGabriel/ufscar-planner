@@ -41,6 +41,7 @@ export type Database = {
           id: number
           name: string
           p_hours: number
+          prerequisites: string[]
           profile: number | null
           status: Database["public"]["Enums"]["status"]
           t_hours: number
@@ -52,6 +53,7 @@ export type Database = {
           id?: number
           name: string
           p_hours: number
+          prerequisites: string[]
           profile?: number | null
           status?: Database["public"]["Enums"]["status"]
           t_hours: number
@@ -63,6 +65,7 @@ export type Database = {
           id?: number
           name?: string
           p_hours?: number
+          prerequisites?: string[]
           profile?: number | null
           status?: Database["public"]["Enums"]["status"]
           t_hours?: number

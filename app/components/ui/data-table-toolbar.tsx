@@ -115,20 +115,22 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        {table.getColumn("activity_id") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("activity_id")}
-            title="Tipo de atividade"
-            options={activities}
-          />
-        )}
-        {table.getColumn("status") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
-            options={statuses}
-          />
-        )}
+        {table.getColumn("activity_id") &&
+          table.getColumn("activity_id")?.getIsVisible() && (
+            <DataTableFacetedFilter
+              column={table.getColumn("activity_id")}
+              title="Tipo de atividade"
+              options={activities}
+            />
+          )}
+        {table.getColumn("status") &&
+          table.getColumn("status")?.getIsVisible() && (
+            <DataTableFacetedFilter
+              column={table.getColumn("status")}
+              title="Status"
+              options={statuses}
+            />
+          )}
         {isFiltered && (
           <Button
             variant="ghost"

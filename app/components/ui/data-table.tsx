@@ -63,6 +63,7 @@ export function DataTable<TData, TValue>({
       columnVisibility: {
         id: false,
         created_at: false,
+        prerequisites: false,
         activity_id: showActivity,
       },
     },

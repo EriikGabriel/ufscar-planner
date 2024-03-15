@@ -2,9 +2,10 @@
 
 import { Tables } from "@@types/supabase"
 import { ColumnDef } from "@tanstack/react-table"
-import { Pencil, Trash2 } from "lucide-react"
+import { Network, Pencil, Trash2 } from "lucide-react"
 import { DeleteDisciplineAlert } from "../DeleteDisciplineAlert"
 import { DisciplineSheet } from "../DisciplineSheet"
+import { PrerequisitesDialog } from "../PrerequisitesDialog"
 import { Badge } from "./badge"
 import { Button } from "./button"
 import { Checkbox } from "./checkbox"
@@ -80,6 +81,10 @@ export const mandatoryColumns: ColumnDef<Tables<"disciplines">>[] = [
     },
   },
   {
+    accessorKey: "prerequisites",
+    header: "Pré-requisitos",
+  },
+  {
     accessorKey: "conclusion_semester",
     header: "Semestre de conclusão",
   },
@@ -102,6 +107,7 @@ export const mandatoryColumns: ColumnDef<Tables<"disciplines">>[] = [
             p_hours: row.getValue("p_hours"),
             activity_id: row.getValue("activity_id"),
             status: row.getValue("status"),
+            prerequisites: row.getValue("prerequisites"),
             conclusion_semester: row.getValue("conclusion_semester"),
             created_at: row.getValue("created_at"),
           }}
@@ -149,7 +155,6 @@ export const optativeColumns: ColumnDef<Tables<"disciplines">>[] = [
       return value.includes(row.getValue(id))
     },
   },
-
   {
     accessorKey: "status",
     header: "Status",
@@ -166,6 +171,10 @@ export const optativeColumns: ColumnDef<Tables<"disciplines">>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },
+  },
+  {
+    accessorKey: "prerequisites",
+    header: "Pré-requisitos",
   },
   {
     accessorKey: "conclusion_semester",
@@ -190,6 +199,7 @@ export const optativeColumns: ColumnDef<Tables<"disciplines">>[] = [
             p_hours: row.getValue("p_hours"),
             activity_id: row.getValue("activity_id"),
             status: row.getValue("status"),
+            prerequisites: row.getValue("prerequisites"),
             conclusion_semester: row.getValue("conclusion_semester"),
             created_at: row.getValue("created_at"),
           }}
@@ -275,5 +285,30 @@ export const newSemesterColumns: ColumnDef<Tables<"disciplines">>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },
+  },
+  {
+    accessorKey: "prerequisites",
+    header: "Pré-requisitos",
+  },
+  {
+    accessorKey: "actions",
+    header: "Ações",
+    cell: ({ row }) =>
+      row.getValue("prerequisites") && (
+        <div className="flex gap-3">
+          <PrerequisitesDialog
+            discipline={row.getValue("name")}
+            prerequisites={row.getValue("prerequisites")}
+          >
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:text-green-400"
+            >
+              <Network className="h-4 w-4" />
+            </Button>
+          </PrerequisitesDialog>
+        </div>
+      ),
   },
 ]
