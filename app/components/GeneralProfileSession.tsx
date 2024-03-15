@@ -25,6 +25,26 @@ export function GeneralProfileSession({ student }: GeneralProfileSessionProps) {
   const entryDate = new Date(student.entry_date ?? "")
   const limitDate = new Date(student.limit_date ?? "")
 
+  const regularFormationDate = new Date(
+    entryDate.getFullYear() + 4,
+    entryDate.getMonth() + 6,
+    entryDate.getDate()
+  )
+
+  const formationProspectDate = new Date(
+    regularFormationDate.getFullYear() + 1,
+    regularFormationDate.getMonth(),
+    regularFormationDate.getDate()
+  )
+
+  const calculateSemesterRemaining = (date: Date) => {
+    const currentDate = new Date()
+    const timeDiff = Math.abs(date.getTime() - currentDate.getTime())
+    const diffSemesters = Math.floor(timeDiff / (1000 * 3600 * 24 * 30 * 6))
+
+    return diffSemesters
+  }
+
   return (
     <div className="flex flex-col w-full gap-3">
       <section className="bg-zinc-900/70 flex flex-col gap-5 border rounded-md p-5">
@@ -131,8 +151,52 @@ export function GeneralProfileSession({ student }: GeneralProfileSessionProps) {
           </div>
         </div>
 
-        <div className="flex gap-5">
-          <CurrentDisciplines className="p-5 " />
+        <div className="flex flex-col gap-5">
+          <CurrentDisciplines className="p-5" />
+          <div className="flex flex-col gap-1">
+            <small className="text-zinc-400">
+              Formação:{" "}
+              <Tooltip>
+                <TooltipTrigger>
+                  <span className="font-semibold text-white">
+                    {regularFormationDate.getFullYear()}/
+                    {regularFormationDate.getMonth() < 6 ? 1 : 2} (
+                    {calculateSemesterRemaining(regularFormationDate)} semestres
+                    restantes)
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {Intl.DateTimeFormat("pt-BR", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  }).format(regularFormationDate)}
+                </TooltipContent>
+              </Tooltip>
+              {}
+            </small>
+            <small className="text-zinc-400">
+              Prospecto de formação:{" "}
+              <Tooltip>
+                <TooltipTrigger>
+                  <span className="font-semibold text-white">
+                    {formationProspectDate.getFullYear()}/
+                    {formationProspectDate.getMonth() < 6 ? 1 : 2} (
+                    {calculateSemesterRemaining(formationProspectDate)}{" "}
+                    semestres restantes)
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {Intl.DateTimeFormat("pt-BR", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  }).format(formationProspectDate)}
+                </TooltipContent>
+              </Tooltip>
+              {}
+            </small>
+          </div>
         </div>
       </section>
     </div>
