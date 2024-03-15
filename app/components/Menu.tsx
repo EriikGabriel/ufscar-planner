@@ -2,13 +2,20 @@ import { MenuButton } from "./MenuButton"
 
 export function Menu() {
   return (
-    <nav className="relative min-h-dvh w-fit flex flex-col justify-center items-center gap-10 px-5 bg-zinc-900/50">
-      <MenuButton href="/home" icon="LayoutGrid" />
-      <MenuButton href="/disciplines/mandatory" icon="FileKey2" />
-      <MenuButton href="/disciplines/optative" icon="FileClock" />
-      <MenuButton href="/extras/complementary" icon="FilePieChart" />
-      <MenuButton href="/extras/extension" icon="FileBox" />
-      <MenuButton href="/extras/internship" icon="FileBadge" />
+    <nav className="relative min-h-dvh w-fit flex flex-col justify-between items-center px-5 pb-10 pt-48 bg-zinc-900/50">
+      <div className="flex flex-col gap-10">
+        <MenuButton href="/home" icon="LayoutGrid" />
+        <MenuButton href="/disciplines/mandatory" icon="FileKey2" />
+        <MenuButton href="/disciplines/optative" icon="FileClock" />
+        <MenuButton href="/extras/complementary" icon="FilePieChart" />
+        <MenuButton href="/extras/extension" icon="FileBox" />
+        <MenuButton href="/extras/internship" icon="FileBadge" />
+      </div>
+
+      <div className="flex flex-col gap-5">
+        <MenuButton href="/user/profile" icon="UserRound" />
+        <MenuButton className="hover:text-red-500" icon="DoorOpen" exitAction />
+      </div>
     </nav>
   )
 }
