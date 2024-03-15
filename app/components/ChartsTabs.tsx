@@ -7,7 +7,6 @@ import { DoughnutChart } from "./DoughnutChart"
 import { LineChart } from "./LineChart"
 
 export function ChartsTabs() {
-  console.log("ss")
   return (
     <Tabs defaultValue="line" className="w-full h-full">
       <div className="mb-4 flex items-center justify-between">
