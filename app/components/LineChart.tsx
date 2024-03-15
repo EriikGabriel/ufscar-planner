@@ -11,8 +11,6 @@ export function LineChart() {
   const [labels, setLabels] = useState<string[]>([])
   const [datasets, setDatasets] = useState<DatasetType[]>([])
 
-  const width = window.innerWidth
-
   Chart.register(...registerables)
 
   useEffect(() => {
