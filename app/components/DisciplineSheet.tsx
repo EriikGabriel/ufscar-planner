@@ -1,17 +1,21 @@
 "use client"
 
+import { Tables } from "@@types/supabase"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createClient } from "@lib/supabase/client"
 import { Button } from "@ui/button"
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@ui/form"
 import { Input } from "@ui/input"
+import { MultiSelect, OptionType } from "@ui/multi-select"
+import { RadioGroup, RadioGroupItem } from "@ui/radio-group"
 import {
   Select,
   SelectContent,
@@ -28,10 +32,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@ui/sheet"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Tables } from "../types/supabase"
-import { RadioGroup, RadioGroupItem } from "./ui/radio-group"
 
 interface DisciplineSheetProps {
   children: React.ReactNode
@@ -47,6 +50,7 @@ const disciplineSchema = z.object({
   status: z.enum(["Studying", "Not started", "Pending", "Complete"]),
   activity_id: z.coerce.number(),
   conclusion_semester: z.coerce.number().min(0),
+  prerequisites: z.array(z.string()),
 })
 
 type DisciplineSchemaType = z.infer<typeof disciplineSchema>
@@ -56,6 +60,14 @@ export function DisciplineSheet({
   disciplineType,
   discipline,
 }: DisciplineSheetProps) {
+  const [options, setOptions] = useState<OptionType[]>([])
+  const [selected, setSelected] = useState<OptionType[]>(
+    discipline?.prerequisites.map((prerequisite) => ({
+      label: prerequisite,
+      value: prerequisite,
+    })) ?? []
+  )
+
   const supabase = createClient()
 
   const form = useForm<DisciplineSchemaType>({
@@ -68,12 +80,14 @@ export function DisciplineSheet({
       activity_id: discipline?.activity_id ?? 1,
       status: discipline?.status,
       conclusion_semester: discipline?.conclusion_semester ?? 0,
+      prerequisites: discipline?.prerequisites ?? [],
     },
   })
 
   async function handleAddDiscipline(data: DisciplineSchemaType) {
     const { status } = await supabase.from("disciplines").insert({
       ...data,
+      prerequisites: selected.map((prerequisite) => prerequisite.value),
       profile: data.profile ? data.profile : null,
       conclusion_semester:
         data.conclusion_semester && form.watch("status") === "Complete"
@@ -94,6 +108,7 @@ export function DisciplineSheet({
         p_hours: data.p_hours,
         status: data.status,
         profile: data.profile ? data.profile : null,
+        prerequisites: selected.map((prerequisite) => prerequisite.value),
         conclusion_semester:
           data.conclusion_semester && form.watch("status") === "Complete"
             ? data.conclusion_semester
@@ -104,8 +119,24 @@ export function DisciplineSheet({
     if (status === 204) location.reload()
   }
 
+  async function handleChangeDisciplineSheet(open: boolean) {
+    if (!open) return
+
+    const { data: disciplines } = await supabase
+      .from("disciplines")
+      .select()
+      .neq("name", discipline?.name)
+
+    setOptions(
+      disciplines?.map((discipline) => ({
+        label: discipline.name,
+        value: discipline.name,
+      })) ?? []
+    )
+  }
+
   return (
-    <Sheet>
+    <Sheet onOpenChange={handleChangeDisciplineSheet}>
       <SheetTrigger asChild>{children}</SheetTrigger>
 
       <SheetContent>
@@ -284,6 +315,29 @@ export function DisciplineSheet({
                 )}
               />
             )}
+            <FormField
+              control={form.control}
+              name="prerequisites"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Pré-requisitos</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      options={options}
+                      placeholder="Selecione os pré-requisitos..."
+                      optionsLimitShow={7}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Deixe vazio caso não haja pré-requisitos
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <SheetFooter>
               <Button type="submit">
                 {!discipline ? "Cadastrar" : "Concluir"}

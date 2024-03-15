@@ -46,10 +46,10 @@ export function PrerequisitesDialog({
   const supabase = createClient()
 
   useEffect(() => {
-    buildEdges(prerequisites)
+    buildEdgesAndNodes(prerequisites)
   }, [])
 
-  async function buildEdges(currentPrerequisites: string[]) {
+  async function buildEdgesAndNodes(currentPrerequisites: string[]) {
     const { data: disciplines } = await supabase
       .from("disciplines")
       .select("prerequisites, name")
@@ -80,7 +80,7 @@ export function PrerequisitesDialog({
     }, [])
 
     if (allPrerequisites?.length && allPrerequisites.length > 0)
-      buildEdges(allPrerequisites)
+      buildEdgesAndNodes(allPrerequisites)
     else {
       setEdges((edges) => {
         const seen = new Set()
