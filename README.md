@@ -56,25 +56,25 @@ This project was developed using the following technologies:
 1. Clone the repository
 
    ```sh
-   git clone https://github.com/EriikGabriel/portfolio.git
+   git clone https://github.com/EriikGabriel/ufscar-planner.git
    ```
 
 2. Access the folder.
 
    ```sh
-   cd portfolio
+   cd ufscar-planner
    ```
 
 3. Install dependecies:
 
    ```sh
-   yarn
+   bun i
    ```
 
 4. Start the development server:
 
    ```sh
-   yarn dev
+   bun dev
    ```
 
    The app will be available for access on your browser at http://localhost:3000
