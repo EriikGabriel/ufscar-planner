@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div align="center">
+  <img alt="Logo" src="public/logo.png" width="100" />
+</div>
+<h1 align="center">
+  UFSCar Planner
+</h1>
+<p align="center">
+  A UFSCar goal planner, made for <b>personal use</b> of goals to be achieved
+</p>
+<p align="center">
+  <a href="LICENSE" target="_blank">
+    <img src="https://img.shields.io/static/v1?label=license&message=MIT&color=b51212&labelColor=181818&style=for-the-badge" alt="License" />
+  </a>
+  
+  <img src="https://img.shields.io/github/forks/EriikGabriel/ufscar-planner?label=forks&message=MIT&color=b51212&labelColor=181818&style=for-the-badge" alt="Forks"/>
 
-## Getting Started
+  <img src="https://img.shields.io/github/stars/EriikGabriel/ufscar-planner?label=stars&message=MIT&color=b51212&labelColor=181818&style=for-the-badge" alt="Stars" />
 
-First, run the development server:
+  <a href="https://vercel.com/eriikgabriel/ufscar-planner" target="_blank">
+    <img src="https://img.shields.io/github/deployments/EriikGabriel/ufscar-planner/production?label=Vercel&logo=vercel&logoColor=white&style=for-the-badge&labelColor=181818" />
+  </a>
+</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![cover](.github/cover.svg)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🧪 Technologies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project was developed using the following technologies:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+<a href="https://nextjs.org/" target="_blank">
+    <img src="https://img.shields.io/badge/next-%2320232a.svg?style=for-the-badge&color=181818&logo=next.js" alt="Next.js"/>
+</a>
+<br>
+<a href="https://www.typescriptlang.org/" target="_blank">
+    <img src="https://img.shields.io/badge/typescript-%2320232a.svg?style=for-the-badge&color=181818&logo=typescript" alt="Typescript"/>
+</a>
+<br>
+<a href="https://supabase.com/" target="_blank">
+    <img src="https://img.shields.io/badge/supabase-%2320232a.svg?style=for-the-badge&color=181818&logo=supabase" alt="Supabase"/>
+</a>
+<br>
+<a href="https://tailwindcss.com/" target="_blank">
+    <img src="https://img.shields.io/badge/tailwind-%2320232a.svg?style=for-the-badge&color=181818&logo=tailwindcss" alt="Tailwindcss"/>
+</a>
+<br>
+<a href="https://zod.dev/" target="_blank">
+    <img src="https://img.shields.io/badge/shadcn/ui-%2320232a.svg?style=for-the-badge&color=181818&logo=shadcn/ui" alt="Shadcn/UI"/>
+</a>
+<br>
+<a href="https://zod.dev/" target="_blank">
+    <img src="https://img.shields.io/badge/zod-%2320232a.svg?style=for-the-badge&color=181818&logo=zod" alt="Zod"/>
+</a>
 
-## Learn More
+## 🛠️ Installation and Setup
 
-To learn more about Next.js, take a look at the following resources:
+1. Clone the repository
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```sh
+   git clone https://github.com/EriikGabriel/portfolio.git
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+2. Access the folder.
 
-## Deploy on Vercel
+   ```sh
+   cd portfolio
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Install dependecies:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   ```sh
+   yarn
+   ```
+
+4. Start the development server:
+
+   ```sh
+   yarn dev
+   ```
+
+   The app will be available for access on your browser at http://localhost:3000
+
+## 🚀 Project Deploy
+
+This project was deployed on the [Vercel](https://vercel.com/) platform and can be accessed [here](https://ufscar-planner.vercel.app).
+
+## 📝 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+_Developed by [Erik Gabriel](https://github.com/EriikGabriel) 🚀_
