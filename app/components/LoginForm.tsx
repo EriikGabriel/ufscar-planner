@@ -65,7 +65,7 @@ export function LoginForm() {
       router.push("/home")
     } else {
       toast("Erro ao fazer login. Verifique suas credenciais.", {
-        classNames: { toast: "group-[.toaster]:bg-red-500 " },
+        classNames: { toast: "group-[.toaster]:bg-red-500" },
       })
 
       setIsFetching(false)
