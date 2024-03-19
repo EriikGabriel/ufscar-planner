@@ -47,7 +47,7 @@ This project was developed using the following technologies:
     <img src="https://img.shields.io/badge/shadcn/ui-%2320232a.svg?style=for-the-badge&color=181818&logo=shadcn/ui" alt="Shadcn/UI"/>
 </a>
 <br>
-<a href="https://zod.dev/" target="_blank">
+<a href="https://ui.shadcn.com/" target="_blank">
     <img src="https://img.shields.io/badge/zod-%2320232a.svg?style=for-the-badge&color=181818&logo=zod" alt="Zod"/>
 </a>
 
