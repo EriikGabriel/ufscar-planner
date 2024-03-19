@@ -3,6 +3,7 @@ import { createClient } from "@lib/supabase/server"
 import { BellIcon } from "lucide-react"
 import { cookies } from "next/headers"
 import { ProfileDropdown } from "./ProfileDropdown"
+import { Button } from "./ui/button"
 
 export async function Header() {
   const cookieStore = cookies()
@@ -29,7 +30,9 @@ export async function Header() {
         </h1>
       </div>
       <div className="flex items-center gap-8">
-        <BellIcon size={24} className="max-md:hidden" />
+        <Button variant="ghost" size="icon">
+          <BellIcon className="max-md:hidden w-5 h-5" />
+        </Button>
         <ProfileDropdown />
       </div>
     </header>
