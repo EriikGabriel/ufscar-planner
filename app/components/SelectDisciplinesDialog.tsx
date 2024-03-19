@@ -28,7 +28,7 @@ export async function SelectDisciplinesDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="w-1/2">
+      <DialogContent className="w-3/5 max-lg:w-10/12">
         <DialogHeader>
           <DialogTitle>Selecione a disciplina</DialogTitle>
           <DialogDescription>

@@ -57,12 +57,14 @@ export async function SemesterProfileSession({
                       activity_id == 1 ? "border-blue-500" : "border-orange-500"
                     )}
                   >
-                    <h2 className="text-md font-medium">{name}</h2>
+                    <h2 className="text-md font-medium max-md:text-sm">
+                      {name}
+                    </h2>
                     <div className="flex items-center h-full gap-5">
                       <Badge
                         variant="outline"
                         className={cn(
-                          "w-24 h-full flex justify-center",
+                          "w-24 h-full flex justify-center max-md:hidden",
                           activity_id == 1
                             ? "bg-blue-500/20 border-blue-500 text-blue-500"
                             : "bg-orange-500/20 border-orange-500 text-orange-500"

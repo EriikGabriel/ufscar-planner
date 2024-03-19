@@ -48,7 +48,7 @@ export function GeneralProfileSession({ student }: GeneralProfileSessionProps) {
   return (
     <div className="flex flex-col w-full gap-3">
       <section className="bg-zinc-900/70 flex flex-col gap-5 border rounded-md p-5">
-        <div className="flex items-center gap-5">
+        <div className="flex items-center max-md:flex-col gap-5">
           <User className="w-6 h-6" />
           <h2 className="font-semibold">Dados pessoais</h2>
           <Button variant="link" className="text-red-500" asChild>
@@ -117,7 +117,7 @@ export function GeneralProfileSession({ student }: GeneralProfileSessionProps) {
       </section>
 
       <section className="bg-zinc-900/70 flex flex-col gap-5 border rounded-md p-5">
-        <div className="flex items-center gap-5">
+        <div className="flex items-center max-md:flex-col gap-5">
           <LibraryBig className="w-6 h-6" />
           <h2 className="font-semibold">Semestre corrente</h2>
           <small>

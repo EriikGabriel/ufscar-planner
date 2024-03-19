@@ -26,8 +26,9 @@ export function ProfileMenuButton({
       variant="ghost"
       size="lg"
       className={cn(
-        "flex justify-between p-3 py-6  rounded-none",
-        sessionIsActive && "border-l border-l-red-500"
+        "flex justify-between p-3 py-6 rounded-none",
+        sessionIsActive &&
+          "border-l max-lg:border-l-0 max-lg:border-b border-l-red-500 max-lg:border-b-red-500"
       )}
     >
       <Link href={href ?? ""}>

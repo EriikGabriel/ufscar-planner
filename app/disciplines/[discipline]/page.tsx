@@ -26,7 +26,7 @@ export default async function Disciplines({
 
   return (
     <main className="w-dvw min-h-dvh flex flex-col gap-20 justify-center items-center">
-      <h1 className="text-lg font-light">
+      <h1 className="text-lg font-light max-lg:mt-5">
         Disciplinas{" "}
         <span className="font-semibold">
           {discipline === "mandatory" ? "Obrigatórias" : "Optativas"}
@@ -39,6 +39,7 @@ export default async function Disciplines({
         }
         tools={{ registerButton: true }}
         showActivity={discipline !== "mandatory"}
+        className="max-xl:w-10/12 max-lg:mb-5 max-md:w-11/12"
       />
     </main>
   )

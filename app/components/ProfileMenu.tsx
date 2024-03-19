@@ -6,7 +6,7 @@ interface ProfileMenuProps {
 
 export function ProfileMenu({ session }: ProfileMenuProps) {
   return (
-    <div className="border rounded-md flex flex-col gap-3 h-fit w-1/4 py-5">
+    <div className="border w-1/4 h-fit py-5 rounded-md flex flex-col max-lg:flex-row max-md:flex-col max-lg:w-full max-lg:justify-center gap-3">
       <ProfileMenuButton
         session={session}
         href="/user/profile"

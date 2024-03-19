@@ -46,7 +46,7 @@ export default async function Profile({
             </p>
           </div>
         </div>
-        <div className="flex gap-5">
+        <div className="flex gap-5 max-lg:flex-col max-lg:pb-5 ">
           <ProfileMenu session={profileSession?.[0]} />
           {!session && <GeneralProfileSession student={student!} />}
           {session === "personal" && (

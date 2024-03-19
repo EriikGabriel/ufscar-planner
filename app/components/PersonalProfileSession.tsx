@@ -97,7 +97,7 @@ export function PersonalProfileSession({
           onSubmit={form.handleSubmit(handleUpdate)}
           className="bg-zinc-900/70 flex flex-col gap-5 p-5 border rounded-md"
         >
-          <div className="flex w-full gap-3">
+          <div className="flex w-full max-md:flex-col gap-3">
             <FormField
               control={form.control}
               name="name"
