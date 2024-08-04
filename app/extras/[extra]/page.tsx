@@ -22,13 +22,14 @@ export default async function Extras({
     internship: "Estágio",
   }
 
-  const { data: complementary } = await supabase
+  const { data: extras } = await supabase
     .from("extras")
     .select()
     .eq(
       "activity_id",
       extra === "complementary" ? 4 : extra === "extension" ? 5 : 6
     )
+    .order("id")
 
   return (
     <main className="w-dvw min-h-dvh flex flex-col gap-20 justify-center items-center">
@@ -38,7 +39,11 @@ export default async function Extras({
           {titles[extra as "complementary" | "extension" | "internship"]}
         </span>
       </h1>
-      <DataList data={complementary ?? []} />
+
+      <DataList
+        data={extras ?? []}
+        type={extra as "complementary" | "extension" | "internship"}
+      />
     </main>
   )
 }
