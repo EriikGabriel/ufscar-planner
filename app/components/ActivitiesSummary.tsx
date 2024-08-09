@@ -1,8 +1,8 @@
 import { createClient } from "@lib/supabase/server"
+import { cn } from "@lib/utils"
 import { SlotProps } from "@radix-ui/react-slot"
 import { icons } from "lucide-react"
 import { cookies } from "next/headers"
-import { cn } from "../lib/utils"
 import { ActivitiesCard } from "./ActivitiesCard"
 
 export async function ActivitiesSummary({ className }: SlotProps) {
@@ -19,7 +19,14 @@ export async function ActivitiesSummary({ className }: SlotProps) {
     .select()
     .eq("validated", false)
 
+  const { data: disciplines } = await supabase
+    .from("disciplines")
+    .select()
+    .eq("status", "Studying")
+
   const estimatedHours: Record<number, number> = {
+    1: 0,
+    2: 0,
     4: 0,
     5: 0,
     6: 0,
@@ -28,6 +35,11 @@ export async function ActivitiesSummary({ className }: SlotProps) {
   extra?.forEach(
     (activity) => (estimatedHours[activity.activity_id] += activity.hours)
   )
+
+  disciplines?.forEach((discipline) => {
+    const act_id = discipline.activity_id === 3 ? 2 : discipline.activity_id
+    estimatedHours[act_id] += discipline.p_hours + discipline.t_hours
+  })
 
   // Merge Optatives 1 and Optatives 2 into a single activity
   activities?.forEach((activity, i) => {
@@ -73,9 +85,7 @@ export async function ActivitiesSummary({ className }: SlotProps) {
           Icon={icons[iconsName[i]]}
           quantity={coursed_hours}
           required={required_hours}
-          estimated={
-            id >= 4 && estimatedHours[id] ? estimatedHours[id] : undefined
-          }
+          estimated={estimatedHours[id] ? estimatedHours[id] : undefined}
           className={`${
             i === activities.length - 1 && "col-span-2 max-sm:col-span-1"
           }`}

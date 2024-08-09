@@ -1,10 +1,10 @@
-import { BarChartBigIcon, Goal, LineChartIcon, RainbowIcon } from "lucide-react"
+import { BarChartBigIcon, LineChartIcon, RainbowIcon } from "lucide-react"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs"
-import { Toggle } from "@ui/toggle"
 import { BarChart } from "./BarChart"
 import { DoughnutChart } from "./DoughnutChart"
 import { LineChart } from "./LineChart"
+import { ToggleProjection } from "./ToggleProjection"
 
 export function ChartsTabs() {
   return (
@@ -21,9 +21,7 @@ export function ChartsTabs() {
             <RainbowIcon />
           </TabsTrigger>
         </TabsList>
-        <Toggle size="sm" className="py-0 my-0">
-          <Goal className="w-4 h-4" />
-        </Toggle>
+        <ToggleProjection />
       </div>
       <TabsContent
         value="line"

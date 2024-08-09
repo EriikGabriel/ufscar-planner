@@ -15,6 +15,8 @@ export function BarChart() {
 
   useEffect(() => {
     const sigaAuth = localStorage.getItem("@ufscar-planner/siga-auth") ?? ""
+    const projection =
+      localStorage.getItem("@ufscar-planner/projection") === "true"
     const supabase = createClient()
 
     const studentQuery = supabase
@@ -37,18 +39,25 @@ export function BarChart() {
 
         const periods = Array.from(
           {
-            length: student.semester_completed
-              ? student.semester
-              : student.semester - 1,
+            length:
+              student.semester_completed || projection
+                ? student.semester
+                : student.semester - 1,
           },
           (_, i) => `Período ${i + 1}`
         )
         setLabels(periods)
 
         const colors = [
-          "rgb(53, 162, 235)",
-          "rgb(222, 31, 200)",
-          "rgb(222, 31, 31)",
+          `rgba(53, 162, 235, 1)`,
+          "rgba(222, 31, 200, 1)",
+          "rgba(222, 31, 31, 1)",
+        ]
+
+        const alpha_colors = [
+          `rgba(53, 162, 235, 0.4)`,
+          "rgba(222, 31, 200, 0.4)",
+          "rgba(222, 31, 31, 0.4)",
         ]
 
         const newDatasets = Array.from({ length: 3 }, (_, i) => {
@@ -56,13 +65,24 @@ export function BarChart() {
           const dataValues = Array.from({ length: periods.length }, () => 0)
 
           const filteredDisciplines = disciplines.filter(
-            (d) => d.activity_id === i + 1 && d.conclusion_semester
+            (d) =>
+              d.activity_id === i + 1 &&
+              (!projection ? d.conclusion_semester : true)
           )
 
           filteredDisciplines.forEach((d) => {
-            if (!d.conclusion_semester) return
+            if (
+              !d.conclusion_semester &&
+              (!projection || d.status !== "Studying")
+            ) {
+              return
+            }
 
-            const index = d.conclusion_semester - 1
+            const index =
+              d.status === "Studying" && projection
+                ? student.semester - 1
+                : d.conclusion_semester! - 1
+
             dataValues[index]++
           })
 
@@ -70,7 +90,11 @@ export function BarChart() {
             label: type,
             data: dataValues,
             borderColor: colors[i],
-            backgroundColor: colors[i],
+            backgroundColor: (ctx) => {
+              return ctx.dataIndex === student.semester - 1
+                ? alpha_colors[i]
+                : colors[i]
+            },
             cubicInterpolationMode: "monotone",
             borderRadius: 5,
           } as DatasetType
