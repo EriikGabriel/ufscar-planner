@@ -189,6 +189,14 @@ export const optativeColumns: ColumnDef<Tables<"disciplines">>[] = [
     header: "Ações",
     cell: ({ row }) => (
       <div className="flex gap-3">
+        <PrerequisitesDialog
+          discipline={row.getValue("name")}
+          prerequisites={row.getValue("prerequisites")}
+        >
+          <Button variant="ghost" size="icon" className="hover:text-green-400">
+            <Network className="h-4 w-4" />
+          </Button>
+        </PrerequisitesDialog>
         <DisciplineSheet
           disciplineType="optative"
           discipline={{
