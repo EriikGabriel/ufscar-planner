@@ -1,10 +1,10 @@
 "use client"
 
+import { useProjectionContext } from "@contexts/ProjectionContext"
 import { createClient } from "@lib/supabase/client"
 import { ChartData } from "chart.js"
 import { useEffect, useMemo, useState } from "react"
 import { Doughnut } from "react-chartjs-2"
-import { useProjectionContext } from "../contexts/ProjectionContext"
 
 type DatasetType = ChartData<"doughnut">["datasets"][0]
 
