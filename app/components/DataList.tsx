@@ -58,7 +58,7 @@ export function DataList({ data, type }: DataListProps) {
                     </p>
                   </div>
                   <div className="flex items-center justify-between">
-                    <p className="font-light max-sm:text-sm">
+                    <p className="font-light max-sm:text-sm w-3/4">
                       {extra.description}
                     </p>
                     <div>

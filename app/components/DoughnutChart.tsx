@@ -4,6 +4,7 @@ import { createClient } from "@lib/supabase/client"
 import { ChartData } from "chart.js"
 import { useEffect, useMemo, useState } from "react"
 import { Doughnut } from "react-chartjs-2"
+import { Tables } from "../types/supabase"
 
 type DatasetType = ChartData<"doughnut">["datasets"][0]
 
@@ -24,6 +25,7 @@ export function DoughnutChart() {
       .select()
       .eq("status", "Studying")
       .order("id")
+    const extrasQuery = supabase.from("extras").select()
 
     if (projection) {
       setLabels(["Concluído (%)", "Projeção (%)", "Restante (%)"])
@@ -31,16 +33,19 @@ export function DoughnutChart() {
       setLabels(["Concluído (%)", "Restante (%)"])
     }
 
-    Promise.all([activitiesQuery, currentDisciplinesQuery]).then(
-      ([activitiesRes, disciplinesRes]) => {
-        const activities = activitiesRes.data
+    let activitiesResult: Tables<"activities">[] = []
+
+    Promise.all([activitiesQuery, currentDisciplinesQuery, extrasQuery]).then(
+      ([activitiesRes, disciplinesRes, extrasRes]) => {
+        let activities = activitiesRes.data ?? []
         const disciplines = disciplinesRes.data
+        const extras = extrasRes.data
 
         if (!activities) return
 
         activities?.forEach((activity, i) => {
           if (activity.name === "Optativas 1") {
-            const optativa2 = activities.find(
+            const optativa2 = activities?.find(
               (act) => act.name === "Optativas 2"
             )
 
@@ -49,10 +54,11 @@ export function DoughnutChart() {
               activity.required_hours += optativa2.required_hours
               activity.coursed_hours += optativa2.coursed_hours
             }
+          } else if (activity.name === "Optativas 2") {
+            activities =
+              activities?.filter((act) => act.name !== "Optativas 2") ?? []
+            return
           }
-
-          if (activity.name !== "Optativas 2") activity.id = i + 1
-          else activities.splice(i, 1)
         })
 
         const colors = [
@@ -106,6 +112,12 @@ export function DoughnutChart() {
                 discipline.p_hours + discipline.t_hours
             })
 
+            extras?.forEach((extra) => {
+              currentDisciplineHours[extra.activity_id - 2] += extra.hours
+            })
+
+            console.log(currentDisciplineHours)
+
             const relativePercentage =
               activities[i].coursed_hours / activities[i].required_hours
 
@@ -126,9 +138,9 @@ export function DoughnutChart() {
                 ? [
                     percentage,
                     diffPercentage,
-                    100 - percentage - diffPercentage,
+                    Math.max(0, 100 - percentage - diffPercentage),
                   ]
-                : [percentage, 100 - percentage],
+                : [percentage, Math.max(0, 100 - percentage)],
               backgroundColor: projection ? projectionColors[i] : colors[i],
               borderColor: (ctx) => {
                 return ctx.dataIndex === 1 && projection
