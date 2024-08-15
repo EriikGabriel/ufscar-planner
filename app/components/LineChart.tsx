@@ -4,12 +4,15 @@ import { createClient } from "@lib/supabase/client"
 import { Chart, ChartData, registerables } from "chart.js"
 import { useEffect, useMemo, useState } from "react"
 import { Line } from "react-chartjs-2"
+import { useProjectionContext } from "../contexts/ProjectionContext"
 
 type DatasetType = ChartData<"line">["datasets"][0]
 
 export function LineChart() {
   const [labels, setLabels] = useState<string[]>([])
   const [datasets, setDatasets] = useState<DatasetType[]>([])
+
+  const { projection } = useProjectionContext()
 
   Chart.register(...registerables)
 
@@ -96,7 +99,7 @@ export function LineChart() {
         setDatasets(newDatasets)
       }
     )
-  }, [])
+  }, [projection])
 
   const memoizedData = useMemo(() => ({ labels, datasets }), [labels, datasets])
 

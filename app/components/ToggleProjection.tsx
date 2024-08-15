@@ -8,22 +8,18 @@ import {
   TooltipTrigger,
 } from "@ui/tooltip"
 import { Goal } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useProjectionContext } from "../contexts/ProjectionContext"
 
 interface ToggleProjectionProps {}
 
-export function ToggleProjection(props: ToggleProjectionProps) {
-  const [projection, setProjection] = useState<boolean>()
+export function ToggleProjection({}: ToggleProjectionProps) {
+  const { projection, setProjection } = useProjectionContext()
 
   function changeToggleProjection(pressed: boolean) {
     localStorage.setItem("@ufscar-planner/projection", String(pressed))
+
     setProjection(pressed)
   }
-
-  useEffect(() => {
-    const projection = localStorage.getItem("@ufscar-planner/projection")
-    setProjection(projection === "true")
-  }, [])
 
   return (
     <TooltipProvider>
@@ -34,7 +30,6 @@ export function ToggleProjection(props: ToggleProjectionProps) {
               size="sm"
               className="py-0 my-0"
               onPressedChange={changeToggleProjection}
-              onClick={() => location.reload()}
               pressed={projection}
             >
               <Goal className="w-4 h-4" />

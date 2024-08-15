@@ -4,20 +4,19 @@ import { createClient } from "@lib/supabase/client"
 import { ChartData } from "chart.js"
 import { useEffect, useMemo, useState } from "react"
 import { Doughnut } from "react-chartjs-2"
-import { Tables } from "../types/supabase"
+import { useProjectionContext } from "../contexts/ProjectionContext"
 
 type DatasetType = ChartData<"doughnut">["datasets"][0]
 
 export function DoughnutChart() {
   const [datasets, setDatasets] = useState<DatasetType[]>([])
   const [labels, setLabels] = useState(["Concluído (%)", "Restante (%)"])
-
   const [generalPercentage, setGeneralPercentage] = useState(0)
+
+  const { projection } = useProjectionContext()
 
   useEffect(() => {
     const supabase = createClient()
-    const projection =
-      localStorage.getItem("@ufscar-planner/projection") === "true"
 
     const activitiesQuery = supabase.from("activities").select().order("id")
     const currentDisciplinesQuery = supabase
@@ -32,8 +31,6 @@ export function DoughnutChart() {
     } else {
       setLabels(["Concluído (%)", "Restante (%)"])
     }
-
-    let activitiesResult: Tables<"activities">[] = []
 
     Promise.all([activitiesQuery, currentDisciplinesQuery, extrasQuery]).then(
       ([activitiesRes, disciplinesRes, extrasRes]) => {
@@ -116,8 +113,6 @@ export function DoughnutChart() {
               currentDisciplineHours[extra.activity_id - 2] += extra.hours
             })
 
-            console.log(currentDisciplineHours)
-
             const relativePercentage =
               activities[i].coursed_hours / activities[i].required_hours
 
@@ -165,7 +160,7 @@ export function DoughnutChart() {
         setGeneralPercentage(newGeneralPercentage * 100)
       }
     )
-  }, [])
+  }, [projection])
 
   const memoizedData = useMemo(() => ({ labels, datasets }), [labels, datasets])
 

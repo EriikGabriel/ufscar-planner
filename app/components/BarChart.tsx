@@ -4,6 +4,7 @@ import { createClient } from "@lib/supabase/client"
 import { Chart, ChartData, registerables } from "chart.js"
 import { useEffect, useMemo, useState } from "react"
 import { Bar } from "react-chartjs-2"
+import { useProjectionContext } from "../contexts/ProjectionContext"
 
 type DatasetType = ChartData<"bar">["datasets"][0]
 
@@ -11,12 +12,12 @@ export function BarChart() {
   const [labels, setLabels] = useState<string[]>([])
   const [datasets, setDatasets] = useState<DatasetType[]>([])
 
+  const { projection } = useProjectionContext()
+
   Chart.register(...registerables)
 
   useEffect(() => {
     const sigaAuth = localStorage.getItem("@ufscar-planner/siga-auth") ?? ""
-    const projection =
-      localStorage.getItem("@ufscar-planner/projection") === "true"
     const supabase = createClient()
 
     const studentQuery = supabase
@@ -103,7 +104,7 @@ export function BarChart() {
         setDatasets(newDatasets)
       }
     )
-  }, [])
+  }, [projection])
 
   const memoizedData = useMemo(() => ({ labels, datasets }), [labels, datasets])
 
