@@ -13,7 +13,6 @@ import {
 } from "@tanstack/react-table"
 
 import { cn } from "@/app/lib/utils"
-import { PrimitiveDivProps } from "@radix-ui/react-select"
 import {
   Table,
   TableBody,
@@ -29,7 +28,7 @@ import { DataTableToolbar } from "./data-table-toolbar"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  className?: PrimitiveDivProps["className"]
+  className?: string
   tools?: {
     registerButton?: boolean
     selectButton?: boolean
