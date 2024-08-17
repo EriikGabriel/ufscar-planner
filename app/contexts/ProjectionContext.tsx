@@ -22,9 +22,7 @@ const ProjectionContext = createContext({} as ProjectionContextType)
 export function ProjectionContextProvider({
   children,
 }: ProjectionContextProviderProps) {
-  const [projection, setProjection] = useState(
-    localStorage.getItem("@ufscar-planner/projection") === "true"
-  )
+  const [projection, setProjection] = useState(false)
 
   return (
     <ProjectionContext.Provider value={{ projection, setProjection }}>

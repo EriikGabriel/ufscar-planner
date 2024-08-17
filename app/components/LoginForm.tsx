@@ -117,7 +117,7 @@ export function LoginForm() {
                 <Input
                   left={
                     <HashIcon
-                      className={`h-4 w-5  ${
+                      className={`h-4 w-5 ${
                         invalid ? "text-red-500" : "text-zinc-500"
                       }`}
                     />
@@ -126,6 +126,7 @@ export function LoginForm() {
                   placeholder="Número UFSCar ou e-mail"
                   autoComplete="off"
                   classNameGroup={cn(
+                    "border",
                     invalid && "border border-red-500 ring-2 ring-red-500/40"
                   )}
                   {...form.register("user")}
@@ -171,6 +172,7 @@ export function LoginForm() {
                   placeholder="Senha"
                   autoComplete="off"
                   classNameGroup={cn(
+                    "border",
                     invalid && "border border-red-500 ring-2 ring-red-500/40"
                   )}
                   {...form.register("password")}

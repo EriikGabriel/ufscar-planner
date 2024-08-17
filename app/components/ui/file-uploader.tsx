@@ -154,7 +154,8 @@ export const FileUploader = forwardRef<
           setActiveIndex(-1)
         }
       },
-      [value, activeIndex, removeFileFromSet]
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [value, activeIndex, removeFileFromSet, orientation, direction]
     )
 
     const onDrop = useCallback(
@@ -195,7 +196,7 @@ export const FileUploader = forwardRef<
           }
         }
       },
-      [reSelectAll, value]
+      [reSelectAll, value, maxFiles, maxSize, onValueChange]
     )
 
     useEffect(() => {

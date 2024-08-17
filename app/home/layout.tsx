@@ -1,6 +1,6 @@
 import { Menu } from "@components/Menu"
+import { ProjectionContextProvider } from "@contexts/ProjectionContext"
 import type { Metadata } from "next"
-import { ProjectionContextProvider } from "../contexts/ProjectionContext"
 import "../globals.css"
 
 export const metadata: Metadata = {
