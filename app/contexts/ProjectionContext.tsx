@@ -5,6 +5,7 @@ import {
   Dispatch,
   SetStateAction,
   useContext,
+  useEffect,
   useState,
 } from "react"
 
@@ -23,6 +24,10 @@ export function ProjectionContextProvider({
   children,
 }: ProjectionContextProviderProps) {
   const [projection, setProjection] = useState(false)
+
+  useEffect(() => {
+    setProjection(localStorage.getItem("@ufscar-planner/projection") === "true")
+  }, [])
 
   return (
     <ProjectionContext.Provider value={{ projection, setProjection }}>

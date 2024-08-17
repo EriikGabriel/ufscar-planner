@@ -1,5 +1,6 @@
 "use client"
 
+import { useProjectionContext } from "@contexts/ProjectionContext"
 import { Toggle } from "@ui/toggle"
 import {
   Tooltip,
@@ -8,7 +9,6 @@ import {
   TooltipTrigger,
 } from "@ui/tooltip"
 import { Goal } from "lucide-react"
-import { useProjectionContext } from "../contexts/ProjectionContext"
 
 interface ToggleProjectionProps {}
 
