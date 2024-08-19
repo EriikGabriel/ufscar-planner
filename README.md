@@ -83,6 +83,12 @@ This project was developed using the following technologies:
 
 This project was deployed on the [Vercel](https://vercel.com/) platform and can be accessed [here](https://ufscar-planner.vercel.app).
 
+## 🚀 Features list
+
+- [ ] Re-model database to support multi-user and a custom app experience.
+- [ ] IRA student history list
+- [ ] Fix flickering at homepage after login
+
 ## 📝 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
