@@ -83,7 +83,7 @@ This project was developed using the following technologies:
 
 This project was deployed on the [Vercel](https://vercel.com/) platform and can be accessed [here](https://ufscar-planner.vercel.app).
 
-## 🚀 Features list
+## 📑 Features list
 
 - [ ] Re-model database to support multi-user and a custom app experience.
 - [ ] IRA student history list
