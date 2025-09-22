@@ -102,7 +102,10 @@ export function DataTableToolbar<TData>({
 
   const params = useParams()
 
-  const discipline = params.discipline as "mandatory" | "optative"
+  const discipline = params.discipline as
+    | "mandatory"
+    | "optative"
+    | "conclusive"
 
   return (
     <div className="flex items-center justify-between">

@@ -9,7 +9,7 @@ export function Menu() {
         <MenuButton href="/disciplines/optative" icon="FileClock" />
         <MenuButton href="/extras/complementary" icon="FilePieChart" />
         <MenuButton href="/extras/extension" icon="FileBox" />
-        <MenuButton href="/extras/internship" icon="FileBadge" />
+        <MenuButton href="/disciplines/conclusive" icon="FileBadge" />
       </div>
 
       <div className="flex flex-col gap-5">

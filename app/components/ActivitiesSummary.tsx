@@ -22,38 +22,41 @@ export async function ActivitiesSummary({ className }: SlotProps) {
   const { data: disciplines } = await supabase
     .from("disciplines")
     .select()
-    .eq("status", "Studying")
+    .in("status", ["Studying", "Complete"])
 
-  const estimatedHours: Record<number, number> = {
-    1: 0,
-    2: 0,
-    4: 0,
-    5: 0,
-    6: 0,
-  }
-
-  extra?.forEach(
-    (activity) => (estimatedHours[activity.activity_id] += activity.hours)
-  )
-
-  disciplines?.forEach((discipline) => {
-    const act_id = discipline.activity_id === 3 ? 2 : discipline.activity_id
-    estimatedHours[act_id] += discipline.p_hours + discipline.t_hours
+  const estimatedHours: Record<number, number> = {}
+  activities?.forEach((activity) => {
+    estimatedHours[activity.id] = 0
   })
 
-  // Merge Optatives 1 and Optatives 2 into a single activity
-  activities?.forEach((activity, i) => {
-    if (activity.name === "Optativas 1") {
-      const optativa2 = activities.find((act) => act.name === "Optativas 2")
+  extra?.forEach((activity) => {
+    if (estimatedHours[activity.activity_id] === undefined)
+      estimatedHours[activity.activity_id] = 0
 
+    estimatedHours[activity.activity_id] += activity.hours
+  })
+
+  disciplines?.forEach((discipline) => {
+    let act_id = discipline.activity_id
+
+    // Merge
+    if (act_id === 3) act_id = 2
+
+    if (estimatedHours[act_id] === undefined) estimatedHours[act_id] = 0
+    estimatedHours[act_id] += discipline.t_hours + discipline.p_hours
+  })
+
+  const finalActivities = [...(activities ?? [])]
+  finalActivities.forEach((activity, i) => {
+    if (activity.name === "Optativas 1") {
+      const optativa2 = finalActivities.find((a) => a.name === "Optativas 2")
       if (optativa2) {
         activity.name = "Optativas"
         activity.required_hours += optativa2.required_hours
         activity.coursed_hours += optativa2.coursed_hours
       }
     }
-
-    if (activity.name === "Optativas 2") activities.splice(i, 1)
+    if (activity.name === "Optativas 2") finalActivities.splice(i, 1)
   })
 
   const colors = [
@@ -79,15 +82,17 @@ export async function ActivitiesSummary({ className }: SlotProps) {
         className
       )}
     >
-      {activities?.map(({ id, name, coursed_hours, required_hours }, i) => (
+      {finalActivities.map(({ id, name, coursed_hours, required_hours }, i) => (
         <ActivitiesCard
           color={colors[i % colors.length]}
           Icon={icons[iconsName[i]]}
           quantity={coursed_hours}
           required={required_hours}
-          estimated={estimatedHours[id] ? estimatedHours[id] : undefined}
+          estimated={estimatedHours[id] ?? undefined}
           className={`${
-            i === activities.length - 1 && "col-span-2 max-sm:col-span-1"
+            i === finalActivities.length - 1
+              ? "col-span-2 max-sm:col-span-1"
+              : ""
           }`}
           key={id}
           index={i}

@@ -234,6 +234,106 @@ export const optativeColumns: ColumnDef<Tables<"disciplines">>[] = [
   },
 ]
 
+export const conclusiveColumns: ColumnDef<Tables<"disciplines">>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+  },
+  {
+    accessorKey: "name",
+    header: "Nome",
+  },
+  {
+    accessorKey: "t_hours",
+    header: "Horas teóricas",
+  },
+  {
+    accessorKey: "p_hours",
+    header: "Horas práticas",
+  },
+  {
+    accessorKey: "activity_id",
+    header: "Tipo de optativa",
+    cell: ({ row }) => (
+      <Badge variant="outline" className="w-24 flex justify-center">
+        {row.getValue("activity_id") === 2 ? "Optativa 1" : "Optativa 2"}
+      </Badge>
+    ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => (
+      <Badge
+        variant="outline"
+        className={`w-24 flex justify-center ${
+          statusColor[String(row.getValue("status"))]
+        }`}
+      >
+        {statusMap[String(row.getValue("status"))]}
+      </Badge>
+    ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
+    },
+  },
+  {
+    accessorKey: "prerequisites",
+    header: "Pré-requisitos",
+  },
+  {
+    accessorKey: "conclusion_semester",
+    header: "Semestre de conclusão",
+  },
+  {
+    accessorKey: "created_at",
+    header: "Criada em",
+  },
+  {
+    accessorKey: "actions",
+    header: "Ações",
+    cell: ({ row }) => (
+      <div className="flex gap-3">
+        <PrerequisitesDialog
+          discipline={row.getValue("name")}
+          prerequisites={row.getValue("prerequisites")}
+        >
+          <Button variant="ghost" size="icon" className="hover:text-green-400">
+            <Network className="h-4 w-4" />
+          </Button>
+        </PrerequisitesDialog>
+        <DisciplineSheet
+          disciplineType="conclusive"
+          discipline={{
+            id: row.getValue("id"),
+            name: row.getValue("name"),
+            profile: null,
+            t_hours: row.getValue("t_hours"),
+            p_hours: row.getValue("p_hours"),
+            activity_id: row.getValue("activity_id"),
+            status: row.getValue("status"),
+            prerequisites: row.getValue("prerequisites"),
+            conclusion_semester: row.getValue("conclusion_semester"),
+            created_at: row.getValue("created_at"),
+          }}
+        >
+          <Button variant="ghost" size="icon" className="hover:text-yellow-400">
+            <Pencil className="h-4 w-4" />
+          </Button>
+        </DisciplineSheet>
+        <DeleteDisciplineAlert name={row.getValue("name")}>
+          <Button variant="ghost" size="icon" className="hover:text-red-400">
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </DeleteDisciplineAlert>
+      </div>
+    ),
+  },
+]
+
 export const newSemesterColumns: ColumnDef<Tables<"disciplines">>[] = [
   {
     id: "select",

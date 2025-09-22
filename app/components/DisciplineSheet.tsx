@@ -38,7 +38,7 @@ import { z } from "zod"
 
 interface DisciplineSheetProps {
   children: React.ReactNode
-  disciplineType: "mandatory" | "optative"
+  disciplineType: "mandatory" | "optative" | "conclusive"
   discipline?: Tables<"disciplines">
 }
 
@@ -62,9 +62,9 @@ export function DisciplineSheet({
 }: DisciplineSheetProps) {
   const [options, setOptions] = useState<OptionType[]>([])
   const [selected, setSelected] = useState<OptionType[]>(
-    discipline?.prerequisites.map((prerequisite) => ({
-      label: prerequisite,
-      value: prerequisite,
+    discipline?.prerequisites.map((p) => ({
+      label: p,
+      value: p,
     })) ?? []
   )
 
@@ -77,7 +77,12 @@ export function DisciplineSheet({
       profile: discipline?.profile ?? 0,
       t_hours: discipline?.t_hours ?? 0,
       p_hours: discipline?.p_hours ?? 0,
-      activity_id: discipline?.activity_id ?? 1,
+      activity_id:
+        disciplineType === "mandatory"
+          ? 1
+          : disciplineType === "optative"
+          ? discipline?.activity_id ?? 2
+          : 6,
       status: discipline?.status,
       conclusion_semester: discipline?.conclusion_semester ?? 0,
       prerequisites: discipline?.prerequisites ?? [],
@@ -87,7 +92,7 @@ export function DisciplineSheet({
   async function handleAddDiscipline(data: DisciplineSchemaType) {
     const { status } = await supabase.from("disciplines").insert({
       ...data,
-      prerequisites: selected.map((prerequisite) => prerequisite.value),
+      prerequisites: selected.map((p) => p.value),
       profile: data.profile ? data.profile : null,
       conclusion_semester:
         data.conclusion_semester && form.watch("status") === "Complete"
@@ -108,7 +113,7 @@ export function DisciplineSheet({
         p_hours: data.p_hours,
         status: data.status,
         profile: data.profile ? data.profile : null,
-        prerequisites: selected.map((prerequisite) => prerequisite.value),
+        prerequisites: selected.map((p) => p.value),
         conclusion_semester:
           data.conclusion_semester && form.watch("status") === "Complete"
             ? data.conclusion_semester
@@ -128,9 +133,9 @@ export function DisciplineSheet({
       .neq("name", discipline?.name)
 
     setOptions(
-      disciplines?.map((discipline) => ({
-        label: discipline.name,
-        value: discipline.name,
+      disciplines?.map((d) => ({
+        label: d.name,
+        value: d.name,
       })) ?? []
     )
   }
@@ -143,11 +148,19 @@ export function DisciplineSheet({
         <SheetHeader>
           <SheetTitle>
             {!discipline ? "Cadastrar" : "Editar"} disciplina{" "}
-            {disciplineType === "mandatory" ? "obrigatória" : "optativa"}
+            {disciplineType === "mandatory"
+              ? "obrigatória"
+              : disciplineType === "optative"
+              ? "optativa"
+              : "conclusiva"}
           </SheetTitle>
           <SheetDescription>
             {!discipline ? "Cadastre" : "Edite"} uma disciplina{" "}
-            {disciplineType === "mandatory" ? "obrigatória" : "optativa"}
+            {disciplineType === "mandatory"
+              ? "obrigatória"
+              : disciplineType === "optative"
+              ? "optativa"
+              : "conclusiva"}
             {!discipline ? " nova" : " existente"}
           </SheetDescription>
         </SheetHeader>
@@ -238,14 +251,7 @@ export function DisciplineSheet({
                   <FormItem>
                     <FormLabel>Horas Teóricas</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        placeholder={
-                          discipline ? String(discipline.t_hours) : "30"
-                        }
-                        min={0}
-                        {...field}
-                      />
+                      <Input type="number" min={0} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -258,14 +264,7 @@ export function DisciplineSheet({
                   <FormItem>
                     <FormLabel>Horas Práticas</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        placeholder={
-                          discipline ? String(discipline.p_hours) : "30"
-                        }
-                        min={0}
-                        {...field}
-                      />
+                      <Input type="number" min={0} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -300,7 +299,7 @@ export function DisciplineSheet({
                 </FormItem>
               )}
             />
-            {form.watch("status") == "Complete" && (
+            {form.watch("status") === "Complete" && (
               <FormField
                 control={form.control}
                 name="conclusion_semester"
@@ -308,7 +307,7 @@ export function DisciplineSheet({
                   <FormItem>
                     <FormLabel>Semestre de Conclusão</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="3" min={0} {...field} />
+                      <Input type="number" min={0} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -327,6 +326,7 @@ export function DisciplineSheet({
                       placeholder="Selecione os pré-requisitos..."
                       selected={selected}
                       setSelected={setSelected}
+                      creatable
                     />
                   </FormControl>
                   <FormDescription>

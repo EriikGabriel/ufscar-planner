@@ -28,8 +28,6 @@ export default async function Profile({
     .eq(userHash.value.length === 6 ? "ra" : "email", userHash.value)
     .single()
 
-  const { data: disciplines } = await supabase.from("disciplines").select()
-
   return (
     <main className="w-dvw min-h-dvh flex flex-col gap-20 justify-center items-center">
       <div className="h-4/5 w-10/12 flex flex-col gap-5">
