@@ -34,6 +34,7 @@ export function ProfileDropdown() {
           className="text-red-600"
           onClick={async () => {
             await deleteCookie("siga-auth")
+            await deleteCookie("first-setup")
 
             router.push("/")
           }}

@@ -26,8 +26,9 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
+import { setFirstSetupServerCookie, setSigaServerCookie } from "@actions/auth"
+import { createClient } from "@lib/supabase/client"
 import { z } from "zod"
-import { setCookie } from "../helpers/store"
 
 const loginSchema = z.object({
   user: z.string().email().or(z.string().length(6)),
@@ -43,6 +44,7 @@ export function LoginForm() {
   })
   const router = useRouter()
   const { get } = useSearchParams()
+  const supabase = createClient()
 
   const [isFetching, setIsFetching] = useState(false)
 
@@ -59,10 +61,20 @@ export function LoginForm() {
     const res = await fetchSiga(user, password)
 
     if (res.ok) {
-      setCookie("siga-auth", user, { sameSite: "strict" })
+      await setSigaServerCookie(user)
       localStorage.setItem("@ufscar-planner/siga-auth", user)
 
-      router.push("/home")
+      const { data, error } = await supabase
+        .from("students")
+        .select()
+        .eq(user.length === 6 ? "ra" : "email", user)
+        .single()
+
+      // Boolean(!data || error)
+      const isFirstSetup = Boolean(!data || error)
+      await setFirstSetupServerCookie(isFirstSetup)
+
+      if (!isFirstSetup) router.push("/home")
     } else {
       toast("Erro ao fazer login. Verifique suas credenciais.", {
         classNames: { toast: "group-[.toaster]:bg-red-500" },
