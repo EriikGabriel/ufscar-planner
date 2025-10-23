@@ -11,7 +11,7 @@ export default async function Login() {
 
   return (
     <main className="w-dvw min-h-dvh flex justify-center items-center">
-      {sigaAuth && isFirstSetup ? <FirstSetup /> : <LoginForm />}
+      {!sigaAuth && !isFirstSetup ? <FirstSetup /> : <LoginForm />}
     </main>
   )
 }
