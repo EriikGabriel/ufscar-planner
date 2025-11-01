@@ -3,7 +3,7 @@
 import { cn } from "@lib/utils"
 import { IconUpload, IconX } from "@tabler/icons-react"
 import { motion } from "motion/react"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useDropzone } from "react-dropzone"
 
 const mainVariant = {
@@ -20,16 +20,22 @@ interface FileUploadProps extends React.HTMLAttributes<HTMLInputElement> {
   onFilesChange?: (files: File[]) => void
   multiple?: boolean
   accept?: string
+  value?: File[]
 }
 
 export const FileUpload = ({
   onFilesChange,
   multiple = false,
   accept,
+  value,
   ...props
 }: FileUploadProps) => {
-  const [files, setFiles] = useState<File[]>([])
+  const [files, setFiles] = useState<File[]>(value ?? [])
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (value) setFiles(value)
+  }, [value])
 
   const handleFileChange = (newFiles: File[]) => {
     if (!newFiles || newFiles.length === 0) return
@@ -88,7 +94,6 @@ export const FileUpload = ({
             handleFileChange(Array.from(selectedFiles))
           }}
           className="hidden"
-          required
           {...props}
         />
 
