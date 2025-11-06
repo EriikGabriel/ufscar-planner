@@ -21,15 +21,17 @@ import { reviewDisciplinesColumns } from "./ui/data-table-columns"
 interface ReviewDisciplinesDialogProps {
   setupData: AcademicHistory | null
   setSetupData: React.Dispatch<React.SetStateAction<AcademicHistory | null>>
+  disciplines: Tables<"disciplines">[]
+  setDisciplines: React.Dispatch<React.SetStateAction<Tables<"disciplines">[]>>
 }
 
 export function ReviewDisciplinesDialog({
   setupData,
   setSetupData,
+  disciplines,
+  setDisciplines,
 }: ReviewDisciplinesDialogProps) {
   const [open, setOpen] = useState(false)
-
-  const [disciplines, setDisciplines] = useState<Tables<"disciplines">[]>([])
 
   useEffect(() => {
     if (!open) return

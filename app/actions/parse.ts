@@ -1,6 +1,11 @@
 "use server"
 
+import { AcademicHistory } from "@@types/setup"
+import { Tables } from "@@types/supabase"
 import pdf from "@cedrugs/pdf-parse"
+import { createClient } from "@lib/supabase/server"
+import { cookies } from "next/headers"
+import { periodToDate } from "../helpers/dates"
 import { prerequisites } from "../helpers/prerequisites"
 
 export async function getAcademicHistoryData(formData: FormData) {
@@ -15,14 +20,14 @@ export async function getAcademicHistoryData(formData: FormData) {
   // console.log(text)
 
   // --- Basic info ---
-  const studentMatch = text.match(/Aluno:\s*\d+\s*-\s*(.+)/)
-  const raMatch = text.match(/Aluno:\s*(\d+)\s*-/)
-  const courseMatch = text.match(/Curso:\s*(.+)/)
-  const iraMatch = text.match(/ID:(\d+)/)
-  const admissionPeriodMatch = text.match(/Período de Ingresso:\s*([\d/]+)/)
+  const studentMatch = text.match(/Aluno:\s*\d+\s*-\s*(.+)/)!
+  const raMatch = text.match(/Aluno:\s*(\d+)\s*-/)!
+  const courseMatch = text.match(/Curso:\s*(.+)/)!
+  const iraMatch = text.match(/ID:(\d+)/)!
+  const admissionPeriodMatch = text.match(/Período de Ingresso:\s*([\d/]+)/)!
   const limitPeriodMatch = text.match(
     /PRAZO LIMITE PARA CONCLUSÃO DO CURSO:\s*([\d/]+)/
-  )
+  )!
 
   /**
    * 1. Capture each semester block.
@@ -118,12 +123,60 @@ export async function getAcademicHistoryData(formData: FormData) {
   })
 
   return {
-    student: studentMatch?.[1]?.trim() ?? null,
-    ra: raMatch?.[1]?.trim() ?? null,
-    course: courseMatch?.[1]?.trim() ?? null,
-    ira: Number(iraMatch?.[1]?.trim()) ?? null,
-    admissionPeriod: admissionPeriodMatch?.[1]?.trim() ?? null,
-    limitPeriod: limitPeriodMatch?.[1]?.trim() ?? null,
+    student: studentMatch?.[1]?.trim(),
+    ra: raMatch?.[1]?.trim(),
+    course: courseMatch?.[1]?.trim(),
+    ira: Number(iraMatch?.[1]?.trim()),
+    admissionPeriod: admissionPeriodMatch?.[1]?.trim(),
+    limitPeriod: limitPeriodMatch?.[1]?.trim(),
     semesters,
+  }
+}
+
+export async function submitDataToDatabase(
+  academicHistory: AcademicHistory,
+  disciplines: Tables<"disciplines">[]
+) {
+  const cookieStore = cookies()
+  const supabase = createClient(cookieStore)
+
+  // Insert student record
+  const { data: studentData, error: studentError } = await supabase
+    .from("students")
+    .insert({
+      ra: academicHistory.ra!,
+      name: academicHistory.student!,
+      course_name: academicHistory.course!,
+      ira: [academicHistory.ira!],
+      entry_date: periodToDate(academicHistory.admissionPeriod!).toISOString(),
+      limit_date: periodToDate(academicHistory.limitPeriod!).toISOString(),
+      semester: academicHistory.semesters.length + 1,
+      email: "",
+    })
+    .select()
+    .single()
+
+  if (studentError) {
+    console.error("Error inserting student:", studentError)
+    throw studentError
+  }
+
+  const studentId = studentData.ra
+
+  // Insert disciplines
+  for (const discipline of disciplines) {
+    const { id, ...rest } = discipline
+
+    const { error: disciplineError } = await supabase
+      .from("disciplines")
+      .insert({
+        ...rest,
+        student_id: studentId,
+      })
+
+    if (disciplineError) {
+      console.error("Error inserting discipline:", disciplineError)
+      throw disciplineError
+    }
   }
 }

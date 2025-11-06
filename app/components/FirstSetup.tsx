@@ -1,13 +1,15 @@
 "use client"
 
 import { AcademicHistory } from "@@types/setup"
+import { getAcademicHistoryData, submitDataToDatabase } from "@actions/parse"
 import { cn } from "@lib/utils"
 import { Button } from "@ui/button"
 import { FileUpload } from "@ui/file-upload"
 import { TooltipProvider } from "@ui/tooltip"
-import { BookOpenCheck, FileDown, FilePenLine, Loader2 } from "lucide-react"
+import { FileDown, FilePenLine, Loader2 } from "lucide-react"
 import { useState, useTransition } from "react"
-import { getAcademicHistoryData } from "../actions/parse"
+import { toast } from "sonner"
+import { Tables } from "../types/supabase"
 import { ReviewBasicInfoDialog } from "./ReviewBasicInfoDialog"
 import { ReviewDisciplinesDialog } from "./ReviewDisciplinesDialog"
 import { SectionSetup } from "./SectionSetup"
@@ -27,12 +29,6 @@ const steps = [
       "Se necessário ajuste as informações importadas para refletir corretamente os seus dados letivos.",
     icon: <FilePenLine className="size-7 text-white" />,
   },
-  {
-    title: "Revisar Dados",
-    description:
-      "Confira se os dados finais do curso estão corretos e atualizados de acordo com o seu histórico.",
-    icon: <BookOpenCheck className="size-7 text-white" />,
-  },
 ]
 
 export function FirstSetup({}: FirstSetupProps) {
@@ -40,6 +36,7 @@ export function FirstSetup({}: FirstSetupProps) {
   const [files, setFiles] = useState<File[]>([])
   const [isPending, startTransition] = useTransition()
   const [setupData, setSetupData] = useState<AcademicHistory | null>(null)
+  const [disciplines, setDisciplines] = useState<Tables<"disciplines">[]>([])
 
   function validateStep(): boolean {
     if (isPending) return false
@@ -47,6 +44,8 @@ export function FirstSetup({}: FirstSetupProps) {
     switch (currentStep) {
       case 0:
         return files.length > 0
+      case 1:
+        return setupData !== null
       default:
         return true
     }
@@ -69,6 +68,9 @@ export function FirstSetup({}: FirstSetupProps) {
       case 0:
         handleProcessHistory(formData)
         break
+      case 1:
+        handleFinalizeSetup()
+        break
       default:
         break
     }
@@ -84,6 +86,16 @@ export function FirstSetup({}: FirstSetupProps) {
     startTransition(async () => {
       const data = await getAcademicHistoryData(formData)
       setSetupData(data)
+    })
+  }
+
+  function handleFinalizeSetup() {
+    startTransition(async () => {
+      if (!setupData) return
+
+      await submitDataToDatabase(setupData, disciplines)
+
+      toast.success("Planner configurado com sucesso 🎉")
     })
   }
 
@@ -119,6 +131,8 @@ export function FirstSetup({}: FirstSetupProps) {
                     <ReviewDisciplinesDialog
                       setupData={setupData}
                       setSetupData={setSetupData}
+                      disciplines={disciplines}
+                      setDisciplines={setDisciplines}
                     />
                   </div>
                 </div>

@@ -13,6 +13,7 @@ import {
   User,
 } from "lucide-react"
 import Link from "next/link"
+import { setRegularFormationDate } from "../helpers/dates"
 import { Tables } from "../types/supabase"
 import { CompleteSemester } from "./CompleteSemester"
 import { NewSemester } from "./NewSemester"
@@ -25,17 +26,8 @@ export function GeneralProfileSession({ student }: GeneralProfileSessionProps) {
   const entryDate = new Date(student.entry_date ?? "")
   const limitDate = new Date(student.limit_date ?? "")
 
-  const regularFormationDate = new Date(
-    entryDate.getFullYear() + 4,
-    entryDate.getMonth() + 6,
-    entryDate.getDate()
-  )
-
-  const formationProspectDate = new Date(
-    regularFormationDate.getFullYear() + 1,
-    regularFormationDate.getMonth(),
-    regularFormationDate.getDate()
-  )
+  const regularFormationDate = setRegularFormationDate(entryDate)
+  const formationProspectDate = setRegularFormationDate(regularFormationDate)
 
   const calculateSemesterRemaining = (date: Date) => {
     const currentDate = new Date()
