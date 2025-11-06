@@ -24,6 +24,7 @@ import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 import { Input } from "./input"
 
 interface DataTableToolbarProps<TData> {
+  disciplines?: Tables<"disciplines">[]
   table: Table<TData>
   tools?: {
     filters?: {
@@ -33,6 +34,9 @@ interface DataTableToolbarProps<TData> {
     registerButton?: boolean
     selectButton?: boolean
   }
+  setReviewDisciplines?: React.Dispatch<
+    React.SetStateAction<Tables<"disciplines">[]>
+  >
 }
 
 export const statuses = [
@@ -93,13 +97,14 @@ export const activities = [
 
 export function DataTableToolbar<TData>({
   table,
+  disciplines,
   tools = {
     registerButton: false,
     selectButton: false,
   },
+  setReviewDisciplines,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
-
   const params = useParams()
 
   const discipline = params.discipline as
@@ -146,7 +151,12 @@ export function DataTableToolbar<TData>({
         )}
       </div>
       {tools.registerButton && (
-        <DisciplineSheet disciplineType={discipline}>
+        <DisciplineSheet
+          disciplineType={discipline ?? "any"}
+          disciplinesData={disciplines}
+          setDisciplinesData={setReviewDisciplines}
+          isReview
+        >
           <Button size="sm">
             <BookPlusIcon className="mr-2 h-4 w-4" /> Cadastrar
           </Button>

@@ -76,6 +76,8 @@ export function ReviewBasicInfoDialog({
       }))
     })
 
+    console.log(setupData)
+
     try {
       toast.success("Informações salvas com sucesso 🎉")
       setOpen(false)

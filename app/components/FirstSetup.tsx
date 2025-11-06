@@ -5,16 +5,11 @@ import { cn } from "@lib/utils"
 import { Button } from "@ui/button"
 import { FileUpload } from "@ui/file-upload"
 import { TooltipProvider } from "@ui/tooltip"
-import {
-  Book,
-  BookOpenCheck,
-  FileDown,
-  FilePenLine,
-  Loader2,
-} from "lucide-react"
+import { BookOpenCheck, FileDown, FilePenLine, Loader2 } from "lucide-react"
 import { useState, useTransition } from "react"
 import { getAcademicHistoryData } from "../actions/parse"
 import { ReviewBasicInfoDialog } from "./ReviewBasicInfoDialog"
+import { ReviewDisciplinesDialog } from "./ReviewDisciplinesDialog"
 import { SectionSetup } from "./SectionSetup"
 
 interface FirstSetupProps {}
@@ -121,10 +116,10 @@ export function FirstSetup({}: FirstSetupProps) {
                       setupData={setupData}
                       setSetupData={setSetupData}
                     />
-                    <Button type="button" variant="outline" size="lg">
-                      <Book className="mr-4" />
-                      Disciplinas
-                    </Button>
+                    <ReviewDisciplinesDialog
+                      setupData={setupData}
+                      setSetupData={setSetupData}
+                    />
                   </div>
                 </div>
               )}

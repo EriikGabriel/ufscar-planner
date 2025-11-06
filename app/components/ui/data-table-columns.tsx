@@ -28,9 +28,21 @@ const activityMap: { [key: number]: string } = {
   1: "Obrigatória",
   2: "Optativa 1",
   3: "Optativa 2",
+  6: "Conclusiva",
+}
+
+const disciplineTypeMap: { [key: number]: string } = {
+  1: "mandatory",
+  2: "optative",
+  3: "optative",
+  6: "conclusive",
 }
 
 export const mandatoryColumns: ColumnDef<Tables<"disciplines">>[] = [
+  {
+    id: "student_id",
+    header: "Student ID",
+  },
   {
     accessorKey: "id",
     header: "ID",
@@ -108,6 +120,7 @@ export const mandatoryColumns: ColumnDef<Tables<"disciplines">>[] = [
         <DisciplineSheet
           disciplineType="mandatory"
           discipline={{
+            student_id: row.getValue("student_id"),
             id: row.getValue("id"),
             name: row.getValue("name"),
             profile: row.getValue("profile"),
@@ -135,6 +148,10 @@ export const mandatoryColumns: ColumnDef<Tables<"disciplines">>[] = [
 ]
 
 export const optativeColumns: ColumnDef<Tables<"disciplines">>[] = [
+  {
+    id: "student_id",
+    header: "Student ID",
+  },
   {
     accessorKey: "id",
     header: "ID",
@@ -208,6 +225,7 @@ export const optativeColumns: ColumnDef<Tables<"disciplines">>[] = [
         <DisciplineSheet
           disciplineType="optative"
           discipline={{
+            student_id: row.getValue("student_id"),
             id: row.getValue("id"),
             name: row.getValue("name"),
             profile: null,
@@ -235,6 +253,10 @@ export const optativeColumns: ColumnDef<Tables<"disciplines">>[] = [
 ]
 
 export const conclusiveColumns: ColumnDef<Tables<"disciplines">>[] = [
+  {
+    id: "student_id",
+    header: "Student ID",
+  },
   {
     accessorKey: "id",
     header: "ID",
@@ -308,6 +330,7 @@ export const conclusiveColumns: ColumnDef<Tables<"disciplines">>[] = [
         <DisciplineSheet
           disciplineType="conclusive"
           discipline={{
+            student_id: row.getValue("student_id"),
             id: row.getValue("id"),
             name: row.getValue("name"),
             profile: null,
@@ -426,5 +449,130 @@ export const newSemesterColumns: ColumnDef<Tables<"disciplines">>[] = [
           </PrerequisitesDialog>
         </div>
       ),
+  },
+]
+
+export const reviewDisciplinesColumns = ({
+  setDisciplinesData,
+}: {
+  setDisciplinesData: React.Dispatch<
+    React.SetStateAction<Tables<"disciplines">[]>
+  >
+}): ColumnDef<Tables<"disciplines">>[] => [
+  {
+    id: "student_id",
+    header: "Student ID",
+  },
+  {
+    accessorKey: "id",
+    header: "ID",
+  },
+  {
+    accessorKey: "name",
+    header: "Nome",
+  },
+  {
+    accessorKey: "profile",
+    header: "Perfil",
+  },
+  {
+    accessorKey: "t_hours",
+    header: "Horas teóricas",
+  },
+  {
+    accessorKey: "p_hours",
+    header: "Horas práticas",
+  },
+  {
+    accessorKey: "activity_id",
+    header: "Tipo de atividade",
+    cell: ({ row }) => (
+      <Badge variant="outline" className="w-24 flex justify-center">
+        {activityMap[Number(row.getValue("activity_id"))]}
+      </Badge>
+    ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => (
+      <Badge
+        variant="outline"
+        className={`w-24 flex justify-center ${
+          statusColor[String(row.getValue("status"))]
+        }`}
+      >
+        {statusMap[String(row.getValue("status"))]}
+      </Badge>
+    ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
+    },
+  },
+  {
+    accessorKey: "prerequisites",
+    header: "Pré-requisitos",
+  },
+  {
+    accessorKey: "conclusion_semester",
+    header: "Semestre de conclusão",
+  },
+  {
+    accessorKey: "created_at",
+    header: "Criada em",
+  },
+  {
+    accessorKey: "actions",
+    header: "Ações",
+    cell: ({ row }) => (
+      <div className="flex gap-3">
+        <PrerequisitesDialog
+          discipline={row.getValue("name")}
+          prerequisites={row.getValue("prerequisites")}
+        >
+          <Button variant="ghost" size="icon" className="hover:text-green-400">
+            <Network className="h-4 w-4" />
+          </Button>
+        </PrerequisitesDialog>
+        <DisciplineSheet
+          disciplineType={
+            disciplineTypeMap[Number(row.getValue("activity_id"))] as
+              | "mandatory"
+              | "optative"
+              | "conclusive"
+          }
+          setDisciplinesData={setDisciplinesData}
+          discipline={{
+            student_id: row.getValue("student_id"),
+            id: row.getValue("id"),
+            name: row.getValue("name"),
+            profile: row.getValue("profile"),
+            t_hours: row.getValue("t_hours"),
+            p_hours: row.getValue("p_hours"),
+            activity_id: row.getValue("activity_id"),
+            status: row.getValue("status"),
+            prerequisites: row.getValue("prerequisites"),
+            conclusion_semester: row.getValue("conclusion_semester"),
+            created_at: row.getValue("created_at"),
+          }}
+          isReview
+        >
+          <Button variant="ghost" size="icon" className="hover:text-yellow-400">
+            <Pencil className="h-4 w-4" />
+          </Button>
+        </DisciplineSheet>
+        <DeleteDisciplineAlert
+          name={row.getValue("name")}
+          setDisciplinesData={setDisciplinesData}
+        >
+          <Button variant="ghost" size="icon" className="hover:text-red-400">
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </DeleteDisciplineAlert>
+      </div>
+    ),
   },
 ]

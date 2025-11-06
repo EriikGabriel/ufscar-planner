@@ -1,3 +1,4 @@
+import { Tables } from "@@types/supabase"
 import { createClient } from "@lib/supabase/client"
 import {
   AlertDialog,
@@ -10,19 +11,36 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@ui/alert-dialog"
+import { toast } from "sonner"
 
 interface DeleteDisciplineAlertProps {
   children: React.ReactNode
   name: string
+  setDisciplinesData?: React.Dispatch<
+    React.SetStateAction<Tables<"disciplines">[]>
+  >
 }
 
 export function DeleteDisciplineAlert({
   children,
   name,
+  setDisciplinesData,
 }: DeleteDisciplineAlertProps) {
   const supabase = createClient()
 
   async function handleDeleteDiscipline() {
+    if (setDisciplinesData) {
+      setDisciplinesData((prev) =>
+        prev.filter((discipline) => discipline.name !== name)
+      )
+
+      toast.success("Disciplina deletada com sucesso!", {
+        position: "bottom-left",
+      })
+
+      return
+    }
+
     const { status } = await supabase
       .from("disciplines")
       .delete()

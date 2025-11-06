@@ -13,6 +13,7 @@ import {
 } from "@tanstack/react-table"
 
 import { cn } from "@/app/lib/utils"
+import { Tables } from "@/app/types/supabase"
 import {
   Table,
   TableBody,
@@ -28,7 +29,11 @@ import { DataTableToolbar } from "./data-table-toolbar"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  pageSize?: number
   className?: string
+  setReviewDisciplines?: React.Dispatch<
+    React.SetStateAction<Tables<"disciplines">[]>
+  >
   tools?: {
     registerButton?: boolean
     selectButton?: boolean
@@ -40,6 +45,8 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   className,
+  setReviewDisciplines,
+  pageSize,
   tools = {
     registerButton: false,
     selectButton: false,
@@ -63,14 +70,23 @@ export function DataTable<TData, TValue>({
         id: false,
         created_at: false,
         prerequisites: false,
+        student_id: false,
         activity_id: showActivity,
+      },
+      pagination: {
+        pageSize,
       },
     },
   })
 
   return (
     <div className={cn("flex flex-col gap-5", className)}>
-      <DataTableToolbar table={table} tools={tools} />
+      <DataTableToolbar
+        table={table}
+        tools={tools}
+        disciplines={data as Tables<"disciplines">[]}
+        setReviewDisciplines={setReviewDisciplines}
+      />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

@@ -14,8 +14,8 @@ import {
   Trash2,
 } from "lucide-react"
 import { DeleteExtraAlert } from "./DeleteExtraAlert"
+import { DocViewer } from "./DocViewer"
 import { ExtraSheet } from "./ExtraSheet"
-import { DocViewer } from "./docViewer"
 
 interface DataListProps {
   data: Tables<"extras">[]
