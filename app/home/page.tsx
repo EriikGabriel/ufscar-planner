@@ -5,12 +5,14 @@ import { CurrentDisciplines } from "@components/CurrentDisciplines"
 import { Header } from "@components/Header"
 import { ProfileInfo } from "@components/ProfileInfo"
 import { getCookie } from "@helpers/store"
+import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
 export default async function Home() {
   const userHash = await getCookie("siga-auth")
+  const isFirstSetup = cookies().get("first-setup")?.value === "true"
 
-  if (!userHash) redirect("/")
+  if (!userHash || isFirstSetup) redirect("/")
 
   return (
     <main className="w-dvw h-dvh max-xl:h-full">

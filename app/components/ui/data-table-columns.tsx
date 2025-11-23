@@ -1,5 +1,6 @@
 "use client"
 
+import { normalizeTitleString } from "@/app/helpers/transform"
 import { Tables } from "@@types/supabase"
 import { ColumnDef } from "@tanstack/react-table"
 import { Network, Pencil, Trash2 } from "lucide-react"
@@ -470,6 +471,7 @@ export const reviewDisciplinesColumns = ({
   {
     accessorKey: "name",
     header: "Nome",
+    accessorFn: (row) => normalizeTitleString(row.name),
   },
   {
     accessorKey: "profile",

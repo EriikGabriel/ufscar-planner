@@ -32,7 +32,7 @@ const steps = [
 ]
 
 export function FirstSetup({}: FirstSetupProps) {
-  const [currentStep, setCurrentStep] = useState(1)
+  const [currentStep, setCurrentStep] = useState(0)
   const [files, setFiles] = useState<File[]>([])
   const [isPending, startTransition] = useTransition()
   const [setupData, setSetupData] = useState<AcademicHistory | null>(null)
@@ -151,9 +151,9 @@ export function FirstSetup({}: FirstSetupProps) {
               </Button>
               <Button
                 type="button"
-                onClick={(e) =>
+                onClick={(e) => {
                   handleNextStep(e.currentTarget.closest("form")!)
-                }
+                }}
                 className={cn(
                   currentStep + 1 === steps.length &&
                     "bg-red-500 text-white hover:bg-red-500/80"

@@ -68,10 +68,9 @@ export function LoginForm() {
         .from("students")
         .select()
         .eq(user.length === 6 ? "ra" : "email", user)
-        .single()
 
       // Boolean(!data || error)
-      const isFirstSetup = Boolean(!data || error)
+      const isFirstSetup = Boolean(!data?.length || error)
       await setFirstSetupServerCookie(isFirstSetup)
 
       if (!isFirstSetup) router.push("/home")

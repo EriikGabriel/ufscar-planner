@@ -36,6 +36,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
+import { normalizeTitleString } from "../helpers/transform"
 
 interface DisciplineSheetProps {
   children: React.ReactNode
@@ -233,8 +234,8 @@ export function DisciplineSheet({
             discipline?.name?.trim().toLowerCase()
         )
         .map((d) => ({
-          label: d.name,
-          value: d.name,
+          label: normalizeTitleString(d.name),
+          value: normalizeTitleString(d.name),
         }))
     )
   }

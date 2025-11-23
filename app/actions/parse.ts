@@ -7,6 +7,7 @@ import { createClient } from "@lib/supabase/server"
 import { cookies } from "next/headers"
 import { periodToDate } from "../helpers/dates"
 import { prerequisites } from "../helpers/prerequisites"
+import { normalizeTitleString } from "../helpers/transform"
 
 export async function getAcademicHistoryData(formData: FormData) {
   const file = formData.get("file") as File
@@ -150,7 +151,8 @@ export async function submitDataToDatabase(
       ira: [academicHistory.ira!],
       entry_date: periodToDate(academicHistory.admissionPeriod!).toISOString(),
       limit_date: periodToDate(academicHistory.limitPeriod!).toISOString(),
-      semester: academicHistory.semesters.length + 1,
+      semester: academicHistory.semesters.length,
+      semester_completed: true,
       email: "",
     })
     .select()
@@ -165,12 +167,13 @@ export async function submitDataToDatabase(
 
   // Insert disciplines
   for (const discipline of disciplines) {
-    const { id, ...rest } = discipline
+    const { id, name, ...rest } = discipline
 
     const { error: disciplineError } = await supabase
       .from("disciplines")
       .insert({
         ...rest,
+        name: normalizeTitleString(name),
         student_id: studentId,
       })
 
@@ -179,4 +182,11 @@ export async function submitDataToDatabase(
       throw disciplineError
     }
   }
+
+  cookies().set("first-setup", String(false), {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+  })
 }
