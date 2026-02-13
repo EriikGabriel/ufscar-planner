@@ -183,10 +183,10 @@ export async function submitDataToDatabase(
     }
   }
 
-  cookies().set("first-setup", String(false), {
-    httpOnly: true,
-    sameSite: "strict",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-  })
+  // cookies().set("first-setup", String(false), {
+  //   httpOnly: true,
+  //   sameSite: "strict",
+  //   secure: process.env.NODE_ENV === "production",
+  //   path: "/",
+  // })
 }

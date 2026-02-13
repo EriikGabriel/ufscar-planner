@@ -34,8 +34,6 @@ export function ReviewDisciplinesDialog({
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    if (!open) return
-
     setupData?.semesters.forEach((semester) => {
       semester.courses.forEach((discipline, i) => {
         if (disciplines == null) return
@@ -86,8 +84,10 @@ export function ReviewDisciplinesDialog({
       })
     })
 
+    console.log("exec useEffect ReviewDisciplinesDialog", disciplines)
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open])
+  }, [])
 
   function handleBasicInfoForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()

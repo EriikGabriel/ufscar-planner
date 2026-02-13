@@ -8,6 +8,8 @@ export default async function Login() {
   const userHash = await getCookie("siga-auth")
   const isFirstSetup = cookies().get("first-setup")?.value === "true"
 
+  console.warn({ isFirstSetup })
+
   if (userHash && !isFirstSetup) redirect("/home")
 
   return (

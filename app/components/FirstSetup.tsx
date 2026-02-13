@@ -45,7 +45,7 @@ export function FirstSetup({}: FirstSetupProps) {
       case 0:
         return files.length > 0
       case 1:
-        return setupData !== null
+        return setupData !== null && disciplines.length > 0
       default:
         return true
     }
@@ -91,7 +91,12 @@ export function FirstSetup({}: FirstSetupProps) {
 
   function handleFinalizeSetup() {
     startTransition(async () => {
-      if (!setupData) return
+      if (!setupData) {
+        toast.error("Dados do histórico acadêmico não encontrados.")
+        return
+      }
+
+      console.log({ setupData, disciplines })
 
       await submitDataToDatabase(setupData, disciplines)
 
